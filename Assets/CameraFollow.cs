@@ -33,6 +33,6 @@ public class CameraFollow : MonoBehaviour
 
 
         transform.position += dir*distance*Mathf.Pow(0.5f,Time.deltaTime)*Time.deltaTime;
-        cam.orthographicSize =Mathf.Max(10, Vector2.Distance(min, max)/1.5f);
+        cam.orthographicSize =Mathf.Max(10, Vector2.Distance(min, max)*1.5f);
     }
 }

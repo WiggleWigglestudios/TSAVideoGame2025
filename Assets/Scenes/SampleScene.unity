@@ -11548,8 +11548,8 @@ Tilemap:
   - first: {x: 10, y: 1, z: 0}
     second:
       serializedVersion: 2
-      m_TileIndex: 6
-      m_TileSpriteIndex: 6
+      m_TileIndex: 2
+      m_TileSpriteIndex: 2
       m_TileMatrixIndex: 0
       m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
@@ -30431,7 +30431,7 @@ Tilemap:
     m_Data: {fileID: 11400000, guid: 2411686024614dd4b898271489cbfba5, type: 2}
   - m_RefCount: 1
     m_Data: {fileID: 11400000, guid: 8a6a9f3c8c8f69841b1247d853a6c527, type: 2}
-  - m_RefCount: 27
+  - m_RefCount: 28
     m_Data: {fileID: 11400000, guid: bb4325a67807cf140b9cb4213f7ab513, type: 2}
   - m_RefCount: 2053
     m_Data: {fileID: 11400000, guid: dff986d5623b04842ac93633ed31a6b8, type: 2}
@@ -30439,7 +30439,7 @@ Tilemap:
     m_Data: {fileID: 11400000, guid: 79318bc954e0b2a489db3cea537146f9, type: 2}
   - m_RefCount: 31
     m_Data: {fileID: 11400000, guid: 278f66b3950286b41ad83d4cf3b6b2e4, type: 2}
-  - m_RefCount: 133
+  - m_RefCount: 132
     m_Data: {fileID: 11400000, guid: fdd2cc843c4b93249a9e377b67a60266, type: 2}
   - m_RefCount: 13
     m_Data: {fileID: 11400000, guid: a85dc64f478aea3428310bd4a59e8afb, type: 2}
@@ -30488,7 +30488,7 @@ Tilemap:
     m_Data: {fileID: 828951443, guid: 7c30f5a983cf6024683189a9a2e3c06a, type: 3}
   - m_RefCount: 2
     m_Data: {fileID: 196807410, guid: 7c30f5a983cf6024683189a9a2e3c06a, type: 3}
-  - m_RefCount: 27
+  - m_RefCount: 28
     m_Data: {fileID: -215270245, guid: 7c30f5a983cf6024683189a9a2e3c06a, type: 3}
   - m_RefCount: 2053
     m_Data: {fileID: -80687183, guid: 7c30f5a983cf6024683189a9a2e3c06a, type: 3}
@@ -30496,7 +30496,7 @@ Tilemap:
     m_Data: {fileID: 1322944335, guid: 7c30f5a983cf6024683189a9a2e3c06a, type: 3}
   - m_RefCount: 31
     m_Data: {fileID: 1105429421, guid: 7c30f5a983cf6024683189a9a2e3c06a, type: 3}
-  - m_RefCount: 133
+  - m_RefCount: 132
     m_Data: {fileID: 857815772, guid: 7c30f5a983cf6024683189a9a2e3c06a, type: 3}
   - m_RefCount: 13
     m_Data: {fileID: 1373690476, guid: 7c30f5a983cf6024683189a9a2e3c06a, type: 3}
@@ -30666,7 +30666,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 934404490}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5fe8aefc53476124a981eb5abb2f68b6, type: 3}
   m_Name: 
@@ -30675,7 +30675,7 @@ MonoBehaviour:
   vel: {x: 0, y: 0}
   checkPointPos: {x: 0, y: 0}
   jumpHeight: 4.5
-  speed: 10
+  speed: 30
   maxJumps: 1
   map: {fileID: 854536988}
   mapRenderer: {fileID: 0}
@@ -30683,6 +30683,7 @@ MonoBehaviour:
   spriteRenderer: {fileID: 934404491}
   playerSprite:
   - {fileID: -511455632578004051, guid: 8232560d3e63d7b4badcade93576d5d1, type: 3}
+  UsesArrowKeys: 1
 --- !u!4 &934404493
 Transform:
   m_ObjectHideFlags: 0
@@ -30874,7 +30875,7 @@ MonoBehaviour:
   vel: {x: 0, y: 0}
   checkPointPos: {x: 0, y: 0}
   jumpHeight: 4.5
-  speed: 10
+  speed: 30
   maxJumps: 1
   map: {fileID: 854536988}
   mapRenderer: {fileID: 0}
@@ -30882,6 +30883,7 @@ MonoBehaviour:
   spriteRenderer: {fileID: 1878863545}
   playerSprite:
   - {fileID: -511455632578004051, guid: 8232560d3e63d7b4badcade93576d5d1, type: 3}
+  UsesArrowKeys: 0
 --- !u!4 &1878863547
 Transform:
   m_ObjectHideFlags: 0
