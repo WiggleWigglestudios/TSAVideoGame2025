@@ -45,9 +45,8 @@ public class PlayerMovement : MonoBehaviour
 
             pos += vel * Time.fixedDeltaTime / (float)subSteps;
             resolveTerrainCollisions();
-            transform.position = new Vector3(pos.x, pos.y, -5);
         }
-
+        transform.position = new Vector3(pos.x, pos.y, -5);
         if (grounded)
         {
             //friction resistance
