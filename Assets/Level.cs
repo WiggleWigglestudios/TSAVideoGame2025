@@ -3,6 +3,9 @@ using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using System.IO;
+using System;
+
 
 public class Level : MonoBehaviour
 {
@@ -12,15 +15,61 @@ public class Level : MonoBehaviour
     public MeshRenderer meshRenderer;
     public MeshFilter meshFilter;
     public Vector2Int[] boundsOfLevel;
+    public string levelDataFilePath;
+
 
     public void loadData() 
     {
         levelData = new int[32, 32];
-        for(int x=0;x<32; x++)
+        
+        if (File.Exists(levelDataFilePath))
         {
-            for (int y = 0; y < 32; y++)
+
+            byte[] data = File.ReadAllBytes(levelDataFilePath);
+            int indexX = 0;
+            int indexY = 0;
+            string currentStringNumber = "";
+            for (int i = 0; i < data.Length; i++)
             {
-                levelData[x, y] = Random.Range(0,32);
+
+                if (data[i] < 32 || data[i] == 44)
+                {
+                    if (currentStringNumber.Length > 0)
+                    {
+                        levelData[indexX,31-indexY]=(int.Parse(currentStringNumber));
+
+
+
+                        indexX++;
+                        if (indexX >= 32)
+                        {
+                            indexX = 0;
+                            indexY++;
+                            if (indexY >= 32)
+                            {
+                                i = data.Length;
+                            }
+                        }
+                    }
+                    currentStringNumber = "";
+                }
+                else
+                {
+                    currentStringNumber += (char)data[i];
+                }
+            }
+            
+
+
+
+        }
+        else {
+            for (int x = 0; x < 32; x++)
+            {
+                for (int y = 0; y < 32; y++)
+                {
+                    levelData[x, y] = UnityEngine.Random.Range(0, 32);
+                }
             }
         }
     }
@@ -87,19 +136,23 @@ public class Level : MonoBehaviour
                 float pixelsPerTile = 80;
                 float pixelsOfPadding = 10;
                 float initialPadding = 0;
-                int numberOfTilesX = (int)((tileSet.width - initialPadding*2) / (pixelsPerTile+ pixelsOfPadding*2));
-                int numberOfTilesY = (int)((tileSet.height - initialPadding * 2) / (pixelsPerTile + pixelsOfPadding*2));
+                int numberOfTilesX = (int)((tileSet.width - initialPadding * 2) / (pixelsPerTile + pixelsOfPadding * 2));
+                int numberOfTilesY = (int)((tileSet.height - initialPadding * 2) / (pixelsPerTile + pixelsOfPadding * 2));
                 float tileX = levelData[x, y] % numberOfTilesX;
-                float tileY = (int)(levelData[x, y] / numberOfTilesY);
+                float tileY = (int)(levelData[x, y] / numberOfTilesX);
+                if (levelData[x, y] == 17) 
+                { 
+                    Debug.Log(tileX + ", " + tileY);
+                }
                 tileX = tileX * pixelsPerTile + initialPadding + pixelsOfPadding * tileX + pixelsOfPadding * (tileX+1);
                 tileY = tileY * pixelsPerTile + initialPadding + pixelsOfPadding * tileY + pixelsOfPadding * (tileY + 1);
                 tileX /= tileSet.width;
                 tileY /= tileSet.height;
 
-                uvs.Add(new Vector2(tileX, tileY));
-                uvs.Add(new Vector2(tileX + pixelsPerTile / tileSet.width, tileY));
-                uvs.Add(new Vector2(tileX, tileY + pixelsPerTile / tileSet.height));
-                uvs.Add(new Vector2(tileX + pixelsPerTile / tileSet.width, tileY + pixelsPerTile / tileSet.height));
+                uvs.Add(new Vector2((tileX), 1.0f-(tileY + pixelsPerTile / tileSet.height)));
+                uvs.Add(new Vector2((tileX + pixelsPerTile / tileSet.width), 1.0f -(tileY + pixelsPerTile / tileSet.height)));
+                uvs.Add(new Vector2((tileX), 1.0f - (tileY)));
+                uvs.Add(new Vector2((tileX + pixelsPerTile / tileSet.width), 1.0f - (tileY)));
 
                 index += 4;
             }
@@ -116,5 +169,9 @@ public class Level : MonoBehaviour
         tileMapMat.mainTexture = tileSet;
 
         meshRenderer.material = tileMapMat;
+
+        boundsOfLevel[0] = new Vector2Int((int)transform.position.x, (int)transform.position.y);
+        boundsOfLevel[1] = new Vector2Int((int)transform.position.x+32, (int)transform.position.y+32);
+
     }
 }
