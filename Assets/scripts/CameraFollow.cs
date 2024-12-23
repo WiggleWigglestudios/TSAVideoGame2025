@@ -42,6 +42,11 @@ public class CameraFollow : MonoBehaviour
         {
             transform.Translate(0.5f * Mathf.Pow((3 - shakeTimer) / 3.0f, 4) * new Vector2(UnityEngine.Random.Range(-1, 1), UnityEngine.Random.Range(-1, 1)));
         }
+        else if (shakeTimer > -1) 
+        {
+            transform.Translate(0.5f * Mathf.Pow((1+shakeTimer), 4) * new Vector2(UnityEngine.Random.Range(-1, 1), UnityEngine.Random.Range(-1, 1)));
+
+        }
         shakeTimer -= Time.deltaTime;
         cam.orthographicSize +=(Mathf.Max(10, Vector2.Distance(min, max)*1.05f)- cam.orthographicSize)*Mathf.Pow(0.5f,Time.deltaTime)*Time.deltaTime;
     }

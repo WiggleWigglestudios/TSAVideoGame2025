@@ -22,6 +22,11 @@ public class Level : MonoBehaviour
     public GameObject collapseTilePrefab;
 
     public bool collapsed = false;
+
+    public int checkPointHits = 0;
+
+    public Level lastLevel;
+
     public void Start()
     {
         recreateMesh();
@@ -29,9 +34,9 @@ public class Level : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.C)&&transform.position.y<10)
+        if (checkPointHits>=2&&lastLevel!=null)
         {
-            collapse();
+            lastLevel.collapse();
         }
     }
 
@@ -238,6 +243,7 @@ public class Level : MonoBehaviour
         Camera.main.GetComponent<CameraFollow>().shakeTimer = 4.0f;
 
         meshRenderer.enabled = false;
+        Destroy(gameObject);
     }
 
 }

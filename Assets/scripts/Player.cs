@@ -1,3 +1,6 @@
+using NUnit.Framework;
+using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using static UnityEditor.PlayerSettings;
@@ -8,9 +11,11 @@ public class Player : MonoBehaviour
     public Vector2 vel;
     public Vector2 checkPointPos;
     public float jumpHeight;
+    float normalJumpHeight;
     public float speed;
+    float normalSpeed;
     public int maxJumps;
-    float jumps;
+    public float jumps;
     bool canJump;
     bool grounded;
     bool inWater;
@@ -28,9 +33,19 @@ public class Player : MonoBehaviour
     public float AnimationFrameRate = 8;
     float AnimationFrameCountdown = 0.25f;
     public bool facing;
+
+    public List<Item> items=new List<Item>();
+
+    public List<Vector2> checkPointHits = new List<Vector2>();
+    [Serialize]
+    public List<Vector2> itemtHits = new List<Vector2>();
+
+    public Player otherPlayer;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        normalSpeed = speed;
+        normalJumpHeight = jumpHeight;
         spriteRenderer.sprite = playerSprites[4];
         pos = transform.position;
         pos -= new Vector2(0.5f, 0.5f);
@@ -39,6 +54,7 @@ public class Player : MonoBehaviour
     private void Update()
     {
         updateAnimations();
+        itemUpdate();
     }
 
     private void FixedUpdate()
@@ -145,13 +161,13 @@ public class Player : MonoBehaviour
             //   //Debug.Log("1");
             if (Mathf.Floor(pos.x) + 1 - pos.x < Mathf.Floor(pos.y) + 1 - pos.y)
             {
-                Debug.Log("1 x");
+                //Debug.Log("1 x");
                 pos.x = Mathf.Floor(pos.x) + 1;
                 vel.x = Mathf.Max(0, vel.x);
             }
             else
             {
-                Debug.Log("1 y");
+                //Debug.Log("1 y");
                 pos.y = Mathf.Floor(pos.y) + 1;
                 vel.y = Mathf.Max(0, vel.y);
                 grounded = true;
@@ -163,13 +179,13 @@ public class Player : MonoBehaviour
             //Debug.Log("2");
             if (pos.x - Mathf.Floor(pos.x) < Mathf.Floor(pos.y) + 1 - pos.y)
             {
-                Debug.Log("2 x");
+                //Debug.Log("2 x");
                 pos.x = Mathf.Floor(pos.x);
                 vel.x = Mathf.Min(0, vel.x);
             }
             else
             {
-                Debug.Log("2 y");
+                //Debug.Log("2 y");
                 pos.y = Mathf.Floor(pos.y) + 1;
                 vel.y = Mathf.Max(0, vel.y);
                 grounded = true;
@@ -182,13 +198,13 @@ public class Player : MonoBehaviour
 
             if (Mathf.Floor(pos.x) + 1 - pos.x < pos.y - Mathf.Floor(pos.y))
             {
-                Debug.Log("3 x");
+                //Debug.Log("3 x");
                 pos.x = Mathf.Floor(pos.x) + 1;
                 vel.x = Mathf.Max(0, vel.x);
             }
             else
             {
-                Debug.Log("3 y");
+                //Debug.Log("3 y");
                 pos.y = Mathf.Floor(pos.y);
                 vel.y = Mathf.Min(0, vel.y);
             }
@@ -205,7 +221,7 @@ public class Player : MonoBehaviour
             }
             else
             {
-                Debug.Log("4 y");
+                //Debug.Log("4 y");
                 pos.y = Mathf.Floor(pos.y);
                 vel.y = Mathf.Min(0, vel.y);
             }
@@ -220,10 +236,10 @@ public class Player : MonoBehaviour
     void tileCheck()
     {
         //checkPoint check
-        if (levelManager.getTile(new Vector2Int((int)pos.x, (int)pos.y)) == 4) { checkPointPos = new Vector2((int)pos.x, (int)pos.y + 0.5f); }
-        if (levelManager.getTile(new Vector2Int((int)pos.x + 1, (int)pos.y)) == 4) { checkPointPos = new Vector2((int)pos.x + 1, (int)pos.y + 0.5f); }
-        if (levelManager.getTile(new Vector2Int((int)pos.x, (int)pos.y + 1)) == 4) { checkPointPos = new Vector2((int)pos.x, (int)pos.y + 1.5f); }
-        if (levelManager.getTile(new Vector2Int((int)pos.x + 1, (int)pos.y + 1)) == 4) { checkPointPos = new Vector2((int)pos.x + 1, (int)pos.y + 1.5f); }
+        if (levelManager.getTile(new Vector2Int((int)pos.x, (int)pos.y)) == 4) {            checkPointCheck(new Vector2Int((int)pos.x, (int)pos.y)); }
+        if (levelManager.getTile(new Vector2Int((int)pos.x + 1, (int)pos.y)) == 4) {        checkPointCheck(new Vector2Int((int)pos.x+1, (int)pos.y)); }
+        if (levelManager.getTile(new Vector2Int((int)pos.x, (int)pos.y + 1)) == 4) {        checkPointCheck(new Vector2Int((int)pos.x, (int)pos.y+1)); }
+        if (levelManager.getTile(new Vector2Int((int)pos.x + 1, (int)pos.y + 1)) == 4) {    checkPointCheck(new Vector2Int((int)pos.x+1, (int)pos.y+1)); }
 
         //Death check
         if (levelManager.getTile(new Vector2(pos.x + 0.5f, pos.y + 0.5f)) == 3) { Died(); }
@@ -242,8 +258,107 @@ public class Player : MonoBehaviour
 
             vel.y -= gravity * depth * 2.0f * Time.fixedDeltaTime;
         }else { inWater = false; }
+
+        //item check
+        if (levelManager.getTile(new Vector2(pos.x + 0.5f, pos.y+0.5f)) == 5)
+        {
+            getItem(new Vector2Int((int)pos.x , (int)pos.y));
+        }
     }
 
+    void getItem(Vector2Int pos)
+    {
+        bool hasBeen = false;
+
+        for (int i = 0; i < itemtHits.Count; i++)
+        {
+            if (Vector2.Distance(itemtHits[i], pos) < 5)
+            {
+                hasBeen = true;
+            }
+        }
+
+        if(!hasBeen)
+        {
+            itemtHits.Add(pos);
+            switch ((int)Random.Range(0,6))
+            {
+                case 0://double jump
+                    items.Add(new Item(0, 15, 2, normalJumpHeight, normalSpeed));
+                    Debug.Log("double jump");
+                    break;
+                case 1://faster speed
+                    items.Add(new Item(0, 15, 1, normalJumpHeight, normalSpeed * 1.5f));
+                    Debug.Log("faster");
+                    break;
+                case 2://higher jump
+                    items.Add(new Item(0, 15, 1, normalJumpHeight * 1.5f, normalSpeed));
+                    Debug.Log("higher jump");
+                    break;
+                case 3://other player cant jump for a bit
+                    otherPlayer.items.Add(new Item(0, 5, 0, normalJumpHeight, normalSpeed));
+                    Debug.Log("other player cant jump");
+                    break;
+                case 4://other player becomes slow
+                    otherPlayer.items.Add(new Item(0, 7, 1, normalJumpHeight, normalSpeed * 0.5f));
+                    Debug.Log("other player becomes slow");
+                    break;
+                case 5://other player can't jump as high
+                    otherPlayer.items.Add(new Item(0, 7, 1, normalJumpHeight * 0.75f, normalSpeed));
+                    Debug.Log("other player cant jump as high");
+                    break;
+
+            }
+           
+
+        }
+    }
+
+    void itemUpdate() 
+    {
+        speed = normalSpeed;
+        maxJumps = 1;
+        jumpHeight = normalJumpHeight;
+        
+        for (int i = 0; i < items.Count; i++)
+        {
+            if (items[i].effectTimer > 0)
+            {
+                if (items[i].type == 0)
+                {
+                    speed = items[i].speed;
+                    maxJumps = items[i].maxJumps;
+                    jumpHeight= items[i].jumpHeight;
+                    items[i].effectTimer -= Time.deltaTime;
+                }
+            }
+            else {
+                
+                items.RemoveAt(i);
+                i--;
+            }
+        }
+    }
+
+    void checkPointCheck(Vector2Int newCheckPointPos) 
+    {
+        bool hasBeen = false;
+
+        for(int i=0;i<checkPointHits.Count;i++)
+        {
+            if (Vector2.Distance(checkPointHits[i],newCheckPointPos)<5) 
+            {
+                hasBeen = true;
+            }
+        }
+
+        if (!hasBeen)
+        {
+            checkPointPos = newCheckPointPos + new Vector2(0, 0.5f);
+            checkPointHits.Add(checkPointPos);
+            levelManager.getLevel(newCheckPointPos).checkPointHits++;
+        }
+    }
 
     float WaterDepth()
     {
@@ -304,4 +419,7 @@ public class Player : MonoBehaviour
         }
         spriteRenderer.flipX = !facing;
     }
+    
+
+
 }

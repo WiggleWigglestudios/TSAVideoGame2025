@@ -40,6 +40,21 @@ public class LevelManager : MonoBehaviour
            (int)(pos.y - levels[levelIndex].boundsOfLevel[0].y)]];
 
     }
+   
+    public Level getLevel(Vector2 pos) 
+    {
+        int levelIndex =0;
+        for (int i = 0; i < levels.Length; i++)
+        {
+            if (inBoundBox(pos, levels[i].boundsOfLevel))
+            {
+
+                levelIndex = i;
+            }
+        }
+        return levels[levelIndex];
+    }
+    
     bool inBoundBox(Vector2 pos, Vector2[] boundingBox) 
     { 
         return pos.x <= boundingBox[1].x && pos.x >= boundingBox[0].x&& pos.y <= boundingBox[1].y && pos.y >= boundingBox[0].y;
