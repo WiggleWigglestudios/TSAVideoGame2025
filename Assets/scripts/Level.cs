@@ -12,10 +12,28 @@ public class Level : MonoBehaviour
 
     public Texture2D tileSet;
     public int[,] levelData;
+    public int[] translationTable;
     public MeshRenderer meshRenderer;
     public MeshFilter meshFilter;
-    public Vector2Int[] boundsOfLevel;
+    public Vector2[] boundsOfLevel;
     public string levelDataFilePath;
+    public string translationDataFilePath;
+
+    public GameObject collapseTilePrefab;
+
+    public bool collapsed = false;
+    public void Start()
+    {
+        recreateMesh();
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.C)&&transform.position.y<10)
+        {
+            collapse();
+        }
+    }
 
 
     public void loadData() 
@@ -71,6 +89,35 @@ public class Level : MonoBehaviour
                     levelData[x, y] = UnityEngine.Random.Range(0, 32);
                 }
             }
+        }
+
+
+        if (File.Exists(translationDataFilePath))
+        {
+            byte[] data = File.ReadAllBytes(translationDataFilePath);
+            string currentStringNumber = "";
+            List<int> newTranslationData = new List<int>();
+            for (int i = 0; i < data.Length; i++)
+            {
+
+                if (data[i] < 32 || data[i] == 44)
+                {
+                    if (currentStringNumber.Length > 0)
+                    {
+                        newTranslationData.Add(int.Parse(currentStringNumber));
+                    }
+                    currentStringNumber = "";
+                }
+                else
+                {
+                    currentStringNumber += (char)data[i];
+                }
+            }
+            translationTable = newTranslationData.ToArray();
+        }
+        else {
+            translationTable = new int[256];
+            
         }
     }
 
@@ -140,10 +187,7 @@ public class Level : MonoBehaviour
                 int numberOfTilesY = (int)((tileSet.height - initialPadding * 2) / (pixelsPerTile + pixelsOfPadding * 2));
                 float tileX = levelData[x, y] % numberOfTilesX;
                 float tileY = (int)(levelData[x, y] / numberOfTilesX);
-                if (levelData[x, y] == 17) 
-                { 
-                    Debug.Log(tileX + ", " + tileY);
-                }
+               
                 tileX = tileX * pixelsPerTile + initialPadding + pixelsOfPadding * tileX + pixelsOfPadding * (tileX+1);
                 tileY = tileY * pixelsPerTile + initialPadding + pixelsOfPadding * tileY + pixelsOfPadding * (tileY + 1);
                 tileX /= tileSet.width;
@@ -170,8 +214,30 @@ public class Level : MonoBehaviour
 
         meshRenderer.material = tileMapMat;
 
-        boundsOfLevel[0] = new Vector2Int((int)transform.position.x, (int)transform.position.y);
-        boundsOfLevel[1] = new Vector2Int((int)transform.position.x+32, (int)transform.position.y+32);
+        boundsOfLevel = new Vector2[2];
+        boundsOfLevel[0] = new Vector2(transform.position.x, transform.position.y);
+        boundsOfLevel[1] = new Vector2(transform.position.x+32, transform.position.y+32);
 
     }
+
+
+    public void collapse() 
+    {
+        collapsed = true;
+
+        for(int x=0;x<32;x++)
+        {
+            for (int y = 0; y < 32; y++)
+            {
+                GameObject newCollapsedTile = Instantiate(collapseTilePrefab, transform.position + new Vector3(x, y) + new Vector3(0.5f, 0.5f), Quaternion.identity);
+               
+                newCollapsedTile.GetComponent<CollapseTile>().initializeCollapseTile(tileSet, levelData[x,y],2+y/32.0f);
+            }
+        }
+
+        Camera.main.GetComponent<CameraFollow>().shakeTimer = 4.0f;
+
+        meshRenderer.enabled = false;
+    }
+
 }

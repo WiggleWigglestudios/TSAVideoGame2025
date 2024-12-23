@@ -1,9 +1,12 @@
 using UnityEngine;
+using static UnityEditor.PlayerSettings;
 
 public class CameraFollow : MonoBehaviour
 {
     public GameObject[] followObjects;
     Camera cam;
+    public float shakeTimer=-10f;
+    Vector3 pos;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -26,13 +29,20 @@ public class CameraFollow : MonoBehaviour
             max.y = Mathf.Max(followObjects[i].transform.position.y, max.y);
         }
         center /= followObjects.Length;
-        Vector3 dir = center - transform.position;
+        Vector3 dir = center - pos;
         dir.z = 0;
         float distance = dir.magnitude;
         dir.Normalize();
 
+        pos += dir * distance * Mathf.Pow(0.5f, Time.deltaTime) * Time.deltaTime;
+        pos.z = -10;
+        transform.position = pos;
 
-        transform.position += dir*distance*Mathf.Pow(0.5f,Time.deltaTime)*Time.deltaTime;
+        if (shakeTimer > 0)
+        {
+            transform.Translate(0.5f * Mathf.Pow((3 - shakeTimer) / 3.0f, 4) * new Vector2(UnityEngine.Random.Range(-1, 1), UnityEngine.Random.Range(-1, 1)));
+        }
+        shakeTimer -= Time.deltaTime;
         cam.orthographicSize +=(Mathf.Max(10, Vector2.Distance(min, max)*1.05f)- cam.orthographicSize)*Mathf.Pow(0.5f,Time.deltaTime)*Time.deltaTime;
     }
 }
