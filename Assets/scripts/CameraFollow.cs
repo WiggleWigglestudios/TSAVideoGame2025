@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using static UnityEditor.PlayerSettings;
 
@@ -10,7 +11,7 @@ public class CameraFollow : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        cam = Camera.main;
+        cam = gameObject.GetComponent<Camera>();
     }
 
     // Update is called once per frame
@@ -48,6 +49,12 @@ public class CameraFollow : MonoBehaviour
 
         }
         shakeTimer -= Time.deltaTime;
-        cam.orthographicSize +=(Mathf.Max(10, Vector2.Distance(min, max)*1.05f)- cam.orthographicSize)*Mathf.Pow(0.5f,Time.deltaTime)*Time.deltaTime;
+        float distY = Mathf.Abs(min.y - max.y)+10.0f;
+        float distX = Mathf.Abs(min.x - max.x)+10.0f;
+        Resolution r = Screen.currentResolution;
+        float screenXYScreenRation = r.width/r.height;
+        float targetCamSize = Mathf.Max(20, Mathf.Max(distY, distX / screenXYScreenRation) * 0.6f); //Mathf.Max(10, Vector2.Distance(min, max) * 1.05f);
+       // Debug.Log(targetCamSize);
+        cam.orthographicSize += (targetCamSize - cam.orthographicSize)*Mathf.Pow(0.5f,Time.deltaTime)*Time.deltaTime;
     }
 }

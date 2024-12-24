@@ -228,22 +228,23 @@ public class Level : MonoBehaviour
 
     public void collapse() 
     {
-        collapsed = true;
-
-        for(int x=0;x<32;x++)
+        if (collapsed != true)
         {
-            for (int y = 0; y < 32; y++)
+            for (int x = 0; x < 32; x++)
             {
-                GameObject newCollapsedTile = Instantiate(collapseTilePrefab, transform.position + new Vector3(x, y) + new Vector3(0.5f, 0.5f), Quaternion.identity);
-               
-                newCollapsedTile.GetComponent<CollapseTile>().initializeCollapseTile(tileSet, levelData[x,y],2+y/32.0f);
+                for (int y = 0; y < 32; y++)
+                {
+                    GameObject newCollapsedTile = Instantiate(collapseTilePrefab, transform.position + new Vector3(x, y) + new Vector3(0.5f, 0.5f), Quaternion.identity);
+
+                    newCollapsedTile.GetComponent<CollapseTile>().initializeCollapseTile(tileSet, levelData[x, y], 2 + y / 32.0f);
+                }
             }
+
+            Camera.main.GetComponent<CameraFollow>().shakeTimer = 4.0f;
+            meshRenderer.enabled = false;
         }
-
-        Camera.main.GetComponent<CameraFollow>().shakeTimer = 4.0f;
-
-        meshRenderer.enabled = false;
-        Destroy(gameObject);
+        
+        collapsed = true;
     }
 
 }
