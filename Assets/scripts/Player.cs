@@ -25,7 +25,7 @@ public class Player : MonoBehaviour
     public SpriteRenderer spriteRenderer;
     public Sprite[] playerSprites;
 
-    const float gravity = -20;
+    const float gravity = -30;
 
     public bool UsesArrowKeys;
 
@@ -74,6 +74,17 @@ public class Player : MonoBehaviour
             pos += vel * Time.fixedDeltaTime / (float)subSteps;
             resolveTerrainCollisions();
         }
+        if (grounded)
+        {
+            jumps = maxJumps;
+            canJump = true;
+        }
+        else
+        {
+            jumps = Mathf.Min(maxJumps - 1, jumps);
+        }
+
+
         transform.position = new Vector3(pos.x+0.5f, pos.y+0.5f, -5);
         if (grounded)
         {
@@ -94,16 +105,7 @@ public class Player : MonoBehaviour
 
     void playerInputs(int subSteps)
     {
-        if (grounded)
-        {
-            jumps = maxJumps;
-            canJump = true;
-        }
-        else
-        {
-            jumps = Mathf.Max(maxJumps - 1, jumps);
-        }
-
+       
         if ((Input.GetKey(KeyCode.D) && !UsesArrowKeys) || (Input.GetKey(KeyCode.RightArrow) && UsesArrowKeys))
         {
             vel.x += speed * Time.fixedDeltaTime / (float)subSteps;
