@@ -41,6 +41,7 @@ public class Player : MonoBehaviour
     public List<Vector2> itemtHits = new List<Vector2>();
 
     public Player otherPlayer;
+    public ItemUIManager itemUIManager;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -137,6 +138,11 @@ public class Player : MonoBehaviour
             if (((Input.GetKey(KeyCode.W) && !UsesArrowKeys) || (Input.GetKey(KeyCode.UpArrow) && UsesArrowKeys)))
             {
                 vel.y += -gravity * jumpHeight/4.0f*Time.deltaTime* WaterDepth()*3.0f;
+                float depth = WaterDepth();
+                if (depth < 0.1f&&vel.y>0) 
+                {
+                    pos.y += 0.1f;
+                }
             }
             if (((Input.GetKey(KeyCode.S) && !UsesArrowKeys) || (Input.GetKey(KeyCode.DownArrow) && UsesArrowKeys)))
             {
@@ -255,8 +261,12 @@ public class Player : MonoBehaviour
             vel.x *= Mathf.Pow(0.1f, Time.deltaTime);
             vel.y *= Mathf.Pow(0.1f, Time.deltaTime);
 
+            vel.x = Mathf.Clamp(vel.x, -1.4f, 1.4f);
+            vel.y = Mathf.Clamp(vel.y, -20.0f, 20.0f);
+
             //depth estimate
             float depth = WaterDepth();
+
 
             vel.y -= gravity * depth * 2.0f * Time.fixedDeltaTime;
         }else { inWater = false; }
@@ -280,36 +290,47 @@ public class Player : MonoBehaviour
             }
         }
 
-        if(!hasBeen)
+        if (!hasBeen)
         {
             itemtHits.Add(pos);
-            switch ((int)Random.Range(0,6))
-            {
-                case 0://double jump
-                    items.Add(new Item(0, 15, 2, normalJumpHeight, normalSpeed));
-                    Debug.Log("double jump");
-                    break;
-                case 1://faster speed
-                    items.Add(new Item(0, 15, 1, normalJumpHeight, normalSpeed * 1.5f));
-                    Debug.Log("faster");
-                    break;
-                case 2://higher jump
-                    items.Add(new Item(0, 15, 1, normalJumpHeight * 1.5f, normalSpeed));
-                    Debug.Log("higher jump");
-                    break;
-                case 3://other player cant jump for a bit
-                    otherPlayer.items.Add(new Item(0, 5, 0, normalJumpHeight, normalSpeed));
-                    Debug.Log("other player cant jump");
-                    break;
-                case 4://other player becomes slow
-                    otherPlayer.items.Add(new Item(0, 7, 1, normalJumpHeight, normalSpeed * 0.5f));
-                    Debug.Log("other player becomes slow");
-                    break;
-                case 5://other player can't jump as high
-                    otherPlayer.items.Add(new Item(0, 7, 1, normalJumpHeight * 0.75f, normalSpeed));
-                    Debug.Log("other player cant jump as high");
-                    break;
 
+            float rand = Random.Range(0, 1);
+            if (rand < 0.2f)
+            {
+                items.Add(new Item(0, 0, 15, 2, normalJumpHeight, normalSpeed));
+                itemUIManager.addItem( items.Count - 1);
+                Debug.Log("double jump");
+            }
+            else if (rand < 0.4f)
+            {
+
+                items.Add(new Item(0, 1, 15, 1, normalJumpHeight, normalSpeed * 1.5f));
+                itemUIManager.addItem( items.Count - 1);
+                Debug.Log("faster");
+            }
+            else if (rand < 0.6f)
+            {
+                items.Add(new Item(0, 2, 15, 1, normalJumpHeight * 1.5f, normalSpeed));
+                itemUIManager.addItem( items.Count - 1);
+                Debug.Log("higher jump");
+            }
+            else if (rand < 0.70f)
+            {
+                otherPlayer.items.Add(new Item(0, 3, 5, 0, normalJumpHeight, normalSpeed));
+                otherPlayer.itemUIManager.addItem(otherPlayer.items.Count - 1);
+                Debug.Log("other player cant jump");
+            }
+            else if (rand < 0.85f)
+            {
+                otherPlayer.items.Add(new Item(0, 4, 7, 1, normalJumpHeight, normalSpeed * 0.5f));
+                otherPlayer.itemUIManager.addItem(otherPlayer.items.Count - 1);
+                Debug.Log("other player becomes slow");
+            }
+            else
+            {
+                otherPlayer.items.Add(new Item(0, 5, 7, 1, normalJumpHeight * 0.75f, normalSpeed));
+                otherPlayer.itemUIManager.addItem(otherPlayer.items.Count - 1);
+                Debug.Log("other player cant jump as high");
             }
            
 
@@ -335,7 +356,7 @@ public class Player : MonoBehaviour
                 }
             }
             else {
-                
+                itemUIManager.removeItem(i);
                 items.RemoveAt(i);
                 i--;
             }
