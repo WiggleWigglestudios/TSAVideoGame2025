@@ -53,7 +53,7 @@ public class CameraFollow : MonoBehaviour
         float distX = Mathf.Abs(min.x - max.x)+10.0f;
         Resolution r = Screen.currentResolution;
         float screenXYScreenRation = r.width/r.height;
-        float targetCamSize = Mathf.Max(20, Mathf.Max(distY, distX / screenXYScreenRation) * 0.6f); //Mathf.Max(10, Vector2.Distance(min, max) * 1.05f);
+        float targetCamSize = Mathf.Max(13, Mathf.Max(distY, distX / screenXYScreenRation) * 0.6f); //Mathf.Max(10, Vector2.Distance(min, max) * 1.05f);
        // Debug.Log(targetCamSize);
         cam.orthographicSize += (targetCamSize - cam.orthographicSize)*Mathf.Pow(0.5f,Time.deltaTime)*Time.deltaTime;
     }

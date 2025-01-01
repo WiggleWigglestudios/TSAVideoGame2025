@@ -294,7 +294,7 @@ public class Player : MonoBehaviour
         {
             itemtHits.Add(pos);
 
-            float rand = Random.Range(0, 1);
+            float rand = Random.Range(0.0f, 1.0f);
             if (rand < 0.2f)
             {
                 items.Add(new Item(0, 0, 15, 2, normalJumpHeight, normalSpeed));
