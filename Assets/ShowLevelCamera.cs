@@ -31,15 +31,16 @@ public class ShowLevelCamera : MonoBehaviour
     {
         if(Vector2.Distance(transform.position, travelPositions[travelIndex].position)>0.05f)
         {
-            transform.Translate((travelPositions[travelIndex].position - transform.position).normalized * Time.deltaTime*travelSpeed);  
+            float speed=Mathf.Min((travelPositions[travelIndex].position - transform.position).magnitude * Mathf.Pow(0.99f, Time.deltaTime),travelSpeed);
+            transform.Translate((travelPositions[travelIndex].position - transform.position).normalized * Time.deltaTime* speed);  
         }
-        if (Mathf.Abs(thisCam.orthographicSize-camSizes[0]) > 0.05f)
+        if (Mathf.Abs(thisCam.orthographicSize-camSizes[travelIndex]) > 0.05f)
         {
-            thisCam.orthographicSize = (camSizes[0] - thisCam.orthographicSize) * Mathf.Pow(0.5f, Time.deltaTime) * Time.deltaTime;
+            thisCam.orthographicSize += (camSizes[travelIndex] - thisCam.orthographicSize) * Mathf.Pow(0.99f, Time.deltaTime)* Time.deltaTime;
         }
 
-        if (Vector2.Distance(transform.position, travelPositions[travelIndex].position) < 0.05f &&
-            Mathf.Abs(thisCam.orthographicSize - camSizes[0]) < 0.05f)
+        if (Vector2.Distance(transform.position, travelPositions[travelIndex].position) <= 0.1f &&
+            Mathf.Abs(thisCam.orthographicSize - camSizes[travelIndex]) <= 2f)
         {
             if (finished)
             {
