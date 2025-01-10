@@ -1,12 +1,10 @@
-using Unity.VisualScripting;
 using UnityEngine;
-using static UnityEditor.PlayerSettings;
 
 public class CameraFollow : MonoBehaviour
 {
     public GameObject[] followObjects;
     Camera cam;
-    public float shakeTimer=-10f;
+    public float shakeTimer = -10f;
     Vector3 pos;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -17,7 +15,7 @@ public class CameraFollow : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Vector3 center=new Vector3();
+        Vector3 center = new Vector3();
         Vector2 min = new Vector2(100000, 100000);
         Vector2 max = new Vector2(-100000, -100000);
         for (int i = 0; i < followObjects.Length; i++)
@@ -43,18 +41,18 @@ public class CameraFollow : MonoBehaviour
         {
             transform.Translate(0.5f * Mathf.Pow((3 - shakeTimer) / 3.0f, 4) * new Vector2(UnityEngine.Random.Range(-1, 1), UnityEngine.Random.Range(-1, 1)));
         }
-        else if (shakeTimer > -1) 
+        else if (shakeTimer > -1)
         {
-            transform.Translate(0.5f * Mathf.Pow((1+shakeTimer), 4) * new Vector2(UnityEngine.Random.Range(-1, 1), UnityEngine.Random.Range(-1, 1)));
+            transform.Translate(0.5f * Mathf.Pow((1 + shakeTimer), 4) * new Vector2(UnityEngine.Random.Range(-1, 1), UnityEngine.Random.Range(-1, 1)));
 
         }
         shakeTimer -= Time.deltaTime;
-        float distY = Mathf.Abs(min.y - max.y)+10.0f;
-        float distX = Mathf.Abs(min.x - max.x)+10.0f;
+        float distY = Mathf.Abs(min.y - max.y) + 10.0f;
+        float distX = Mathf.Abs(min.x - max.x) + 10.0f;
         Resolution r = Screen.currentResolution;
-        float screenXYScreenRation = r.width/r.height;
+        float screenXYScreenRation = r.width / r.height;
         float targetCamSize = Mathf.Max(13, Mathf.Max(distY, distX / screenXYScreenRation) * 0.6f); //Mathf.Max(10, Vector2.Distance(min, max) * 1.05f);
-       // Debug.Log(targetCamSize);
-        cam.orthographicSize += (targetCamSize - cam.orthographicSize)*Mathf.Pow(0.5f,Time.deltaTime)*Time.deltaTime;
+                                                                                                    // Debug.Log(targetCamSize);
+        cam.orthographicSize += (targetCamSize - cam.orthographicSize) * Mathf.Pow(0.5f, Time.deltaTime) * Time.deltaTime;
     }
 }

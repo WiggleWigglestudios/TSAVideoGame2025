@@ -3189,12 +3189,12 @@ MonoBehaviour:
   player: {fileID: 390477452}
   items: []
   itemImages:
-  - {fileID: -511455632578004051, guid: 8232560d3e63d7b4badcade93576d5d1, type: 3}
-  - {fileID: -8333251680317690096, guid: 7c30f5a983cf6024683189a9a2e3c06a, type: 3}
-  - {fileID: -80687183, guid: 7c30f5a983cf6024683189a9a2e3c06a, type: 3}
-  - {fileID: 1105429421, guid: 7c30f5a983cf6024683189a9a2e3c06a, type: 3}
-  - {fileID: 1486833708, guid: 7c30f5a983cf6024683189a9a2e3c06a, type: 3}
-  - {fileID: 1543979968, guid: 7c30f5a983cf6024683189a9a2e3c06a, type: 3}
+  - {fileID: 3603203139809451918, guid: 5384cee929457f042b50619cfb14ce16, type: 3}
+  - {fileID: -5130294652377279623, guid: d57004ccb38ad6f478bbfd238c8e51f7, type: 3}
+  - {fileID: -3607440795955097578, guid: 5384cee929457f042b50619cfb14ce16, type: 3}
+  - {fileID: -4445190676853325739, guid: 967ccba88c706e545ae14a5e70846b92, type: 3}
+  - {fileID: 41284046, guid: 5384cee929457f042b50619cfb14ce16, type: 3}
+  - {fileID: 55676011, guid: 5384cee929457f042b50619cfb14ce16, type: 3}
 --- !u!1 &1189959875
 GameObject:
   m_ObjectHideFlags: 0
@@ -4559,12 +4559,12 @@ MonoBehaviour:
   player: {fileID: 1066059075}
   items: []
   itemImages:
-  - {fileID: -511455632578004051, guid: 8232560d3e63d7b4badcade93576d5d1, type: 3}
-  - {fileID: -8333251680317690096, guid: 7c30f5a983cf6024683189a9a2e3c06a, type: 3}
-  - {fileID: -80687183, guid: 7c30f5a983cf6024683189a9a2e3c06a, type: 3}
-  - {fileID: 1105429421, guid: 7c30f5a983cf6024683189a9a2e3c06a, type: 3}
-  - {fileID: 1486833708, guid: 7c30f5a983cf6024683189a9a2e3c06a, type: 3}
-  - {fileID: 1543979968, guid: 7c30f5a983cf6024683189a9a2e3c06a, type: 3}
+  - {fileID: 3603203139809451918, guid: 5384cee929457f042b50619cfb14ce16, type: 3}
+  - {fileID: -5130294652377279623, guid: d57004ccb38ad6f478bbfd238c8e51f7, type: 3}
+  - {fileID: -3607440795955097578, guid: 5384cee929457f042b50619cfb14ce16, type: 3}
+  - {fileID: -4445190676853325739, guid: 967ccba88c706e545ae14a5e70846b92, type: 3}
+  - {fileID: 41284046, guid: 5384cee929457f042b50619cfb14ce16, type: 3}
+  - {fileID: 55676011, guid: 5384cee929457f042b50619cfb14ce16, type: 3}
 --- !u!1 &1902048384
 GameObject:
   m_ObjectHideFlags: 0

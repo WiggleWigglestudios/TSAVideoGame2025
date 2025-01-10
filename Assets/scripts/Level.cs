@@ -240,7 +240,11 @@ public class Level : MonoBehaviour
                 }
             }
 
-            Camera.main.GetComponent<CameraFollow>().shakeTimer = 4.0f;
+            Camera[] allCameras = Camera.allCameras;
+            for (int i = 0; i < allCameras.Length; i++)
+            {
+                allCameras[i].GetComponent<CameraFollow>().shakeTimer = 4.0f;
+            }
             meshRenderer.enabled = false;
         }
         
