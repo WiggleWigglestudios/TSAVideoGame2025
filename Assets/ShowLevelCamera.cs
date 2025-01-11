@@ -6,9 +6,12 @@ public class ShowLevelCamera : MonoBehaviour
     public GameObject[] otherCams;
     public Player[] players;
     public Transform[] travelPositions;
+    public Vector2 velocity;
+    public float drag;
     public float[] camSizes;
     public int travelIndex;
     public float travelSpeed;
+    public float maxTravelSpeed;
     public float zoomSpeed;
     bool finished;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -31,15 +34,18 @@ public class ShowLevelCamera : MonoBehaviour
     {
         if(Vector2.Distance(transform.position, travelPositions[travelIndex].position)>0.05f)
         {
-            float speed=Mathf.Min((travelPositions[travelIndex].position - transform.position).magnitude * Mathf.Pow(0.99f, Time.deltaTime),travelSpeed);
-            transform.Translate((travelPositions[travelIndex].position - transform.position).normalized * Time.deltaTime* speed);  
+            velocity += (Vector2)(travelPositions[travelIndex].position - transform.position).normalized*Time.deltaTime*travelSpeed;
+            velocity = velocity.normalized * Mathf.Min(velocity.magnitude,maxTravelSpeed)* Mathf.Pow(drag, Time.deltaTime);
+            transform.Translate(velocity*Time.deltaTime);
+           // float speed=Mathf.Min((travelPositions[travelIndex].position - transform.position).magnitude * Mathf.Pow(travelSpeed, Time.deltaTime),maxTravelSpeed);
+            //transform.Translate((travelPositions[travelIndex].position - transform.position).normalized * Time.deltaTime* speed);  
         }
         if (Mathf.Abs(thisCam.orthographicSize-camSizes[travelIndex]) > 0.05f)
         {
-            thisCam.orthographicSize += (camSizes[travelIndex] - thisCam.orthographicSize) * Mathf.Pow(0.99f, Time.deltaTime)* Time.deltaTime;
+            thisCam.orthographicSize += (camSizes[travelIndex] - thisCam.orthographicSize) * Mathf.Pow(zoomSpeed, Time.deltaTime)* Time.deltaTime;
         }
 
-        if (Vector2.Distance(transform.position, travelPositions[travelIndex].position) <= 0.1f &&
+        if (Vector2.Distance(transform.position, travelPositions[travelIndex].position) <= 8f &&
             Mathf.Abs(thisCam.orthographicSize - camSizes[travelIndex]) <= 2f)
         {
             if (finished)
