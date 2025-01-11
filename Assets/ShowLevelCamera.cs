@@ -1,5 +1,6 @@
+using TMPro;
 using UnityEngine;
-
+using UnityEngine.UI;
 public class ShowLevelCamera : MonoBehaviour
 {
     public Camera thisCam;
@@ -13,7 +14,9 @@ public class ShowLevelCamera : MonoBehaviour
     public float travelSpeed;
     public float maxTravelSpeed;
     public float zoomSpeed;
+    float countDown;
     bool finished;
+    public TextMeshProUGUI countDownText;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -27,6 +30,7 @@ public class ShowLevelCamera : MonoBehaviour
         }
         transform.position = travelPositions[0].position;
         thisCam.orthographicSize = camSizes[0];
+        countDown = 3;
     }
 
     // Update is called once per frame
@@ -48,24 +52,43 @@ public class ShowLevelCamera : MonoBehaviour
         if (Vector2.Distance(transform.position, travelPositions[travelIndex].position) <= 8f &&
             Mathf.Abs(thisCam.orthographicSize - camSizes[travelIndex]) <= 2f)
         {
-            if (finished)
+
+            if(finished)
             {
-                for (int i = 0; i < players.Length; i++)
-                {
-                    players[i].enabled = true;
-                }
-                for (int i = 0; i < otherCams.Length; i++)
-                {
-                    otherCams[i].SetActive(true);
-                }
-                gameObject.SetActive(false);
+               
             }
 
-            travelIndex++;
-            if (travelIndex >= camSizes.Length)
+            if (finished)
             {
+
+                countDown -= Time.deltaTime;
+                countDownText.text = "" + Mathf.Ceil(countDown);
+                if(countDown<=0.0f)
+                {
+
+                    for (int i = 0; i < players.Length; i++)
+                    {
+                        players[i].enabled = true;
+                    }
+                    for (int i = 0; i < otherCams.Length; i++)
+                    {
+                        otherCams[i].SetActive(true);
+                    }
+                    gameObject.SetActive(false);
+                    countDownText.text = "";
+                }
+
+            }
+            else
+            {
+
+
+                travelIndex++;
+                if (travelIndex >= camSizes.Length)
+                {
                 finished = true;
                 travelIndex = 0;
+                }
             }
         }
         
