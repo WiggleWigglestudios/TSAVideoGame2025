@@ -49,15 +49,19 @@ public class ShowLevelCamera : MonoBehaviour
             thisCam.orthographicSize += (camSizes[travelIndex] - thisCam.orthographicSize) * Mathf.Pow(zoomSpeed, Time.deltaTime)* Time.deltaTime;
         }
 
+
+        if (Input.GetKeyDown(KeyCode.Return))
+        {
+         
+                finished = true;
+                travelIndex = 0;
+        }
+
         if (Vector2.Distance(transform.position, travelPositions[travelIndex].position) <= 8f &&
             Mathf.Abs(thisCam.orthographicSize - camSizes[travelIndex]) <= 2f)
         {
 
-            if(finished)
-            {
-               
-            }
-
+          
             if (finished)
             {
 
