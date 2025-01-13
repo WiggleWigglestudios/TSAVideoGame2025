@@ -2,17 +2,17 @@ using UnityEngine;
 
 public class PlayerFootsteps : MonoBehaviour
 {
-    public AudioSource footstepSource; // Reference to the Audio Source
-    public AudioClip leftFootSound;   // Sound for the left foot
-    public AudioClip rightFootSound;  // Sound for the right foot
-    public float stepInterval = 0.5f; // Time between steps
+    public AudioSource footstepSource; 
+    public AudioClip leftFootSound;   
+    public AudioClip rightFootSound;  
+    public float stepInterval = 0.5f; 
     private float stepTimer;
-    private bool isLeftFoot = true;  // Toggle between left and right foot
-    private Player playerScript;     // Reference to the Player script
+    private bool isLeftFoot = true;  
+    private Player playerScript;     
 
     void Start()
     {
-        // Get the Player script from the same GameObject
+        // Grab player script
         playerScript = GetComponent<Player>();
         if (footstepSource == null)
         {
@@ -23,10 +23,8 @@ public class PlayerFootsteps : MonoBehaviour
 
     void Update()
     {
-        // Check player state
         if (playerScript != null)
         {
-            // Check if the player is grounded, not in water, and moving
             if (playerScript.grounded && !playerScript.inWater && Mathf.Abs(playerScript.vel.x) > 0.1f)
             {
                 stepTimer -= Time.deltaTime;
@@ -34,12 +32,12 @@ public class PlayerFootsteps : MonoBehaviour
                 if (stepTimer <= 0f)
                 {
                     PlayFootstep();
-                    stepTimer = stepInterval; // Reset the step timer
+                    stepTimer = stepInterval; 
                 }
             }
             else
             {
-                stepTimer = 0f; // Reset timer when not moving
+                stepTimer = 0f; 
             }
         }
         else
@@ -53,6 +51,6 @@ public class PlayerFootsteps : MonoBehaviour
         // Alternate between left and right foot sounds
         footstepSource.clip = isLeftFoot ? leftFootSound : rightFootSound;
         footstepSource.Play();
-        isLeftFoot = !isLeftFoot; // Toggle footstep sound
+        isLeftFoot = !isLeftFoot; 
     }
 }

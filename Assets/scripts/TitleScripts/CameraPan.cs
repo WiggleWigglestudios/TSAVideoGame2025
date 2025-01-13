@@ -2,26 +2,24 @@ using UnityEngine;
 
 public class BackgroundCameraPan : MonoBehaviour
 {
-    public Vector3 startPosition; // Starting position of the camera
-    public Vector3 endPosition;   // End position of the camera
-    public float speed = 2f;      // Speed of the panning
+    public Vector3 startPosition;
+    public Vector3 endPosition;  
+    public float speed = 2f;     
     private bool movingToEnd = true;
 
     void Start()
     {
-        // Set the camera's initial position
         transform.position = startPosition;
     }
 
     void Update()
     {
-        // Move the camera between startPosition and endPosition
         if (movingToEnd)
         {
             transform.position = Vector3.MoveTowards(transform.position, endPosition, speed * Time.deltaTime);
             if (transform.position == endPosition)
             {
-                movingToEnd = false; // Reverse direction
+                movingToEnd = false; 
             }
         }
         else
@@ -29,7 +27,7 @@ public class BackgroundCameraPan : MonoBehaviour
             transform.position = Vector3.MoveTowards(transform.position, startPosition, speed * Time.deltaTime);
             if (transform.position == startPosition)
             {
-                movingToEnd = true; // Reverse direction
+                movingToEnd = true; 
             }
         }
     }
