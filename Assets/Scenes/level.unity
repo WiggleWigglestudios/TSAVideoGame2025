@@ -1801,7 +1801,9 @@ MonoBehaviour:
   otherPlayer: {fileID: 1066059075}
   itemUIManager: {fileID: 1164722710}
   audioSource: {fileID: 390477457}
+  audioSourceSwim: {fileID: 390477457}
   jumpSound: {fileID: 8300000, guid: a41ca80c5f9f94c96a2cb6cdb6c39447, type: 3}
+  swimSound: {fileID: 8300000, guid: d15e0084573654abcb1e36e712533ca1, type: 3}
 --- !u!212 &390477453
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1887,7 +1889,7 @@ MonoBehaviour:
   footstepSource: {fileID: 390477457}
   leftFootSound: {fileID: 8300000, guid: c7d1ecf1e3ab94e2699d7987e9c928da, type: 3}
   rightFootSound: {fileID: 8300000, guid: 918f89b4869c44382b73848c15ee31c2, type: 3}
-  stepInterval: 0.3
+  stepInterval: 0.4
 --- !u!82 &390477457
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1900,8 +1902,8 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
-  m_PlayOnAwake: 1
-  m_Volume: 0.3
+  m_PlayOnAwake: 0
+  m_Volume: 0.05
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -2950,7 +2952,9 @@ MonoBehaviour:
   otherPlayer: {fileID: 390477452}
   itemUIManager: {fileID: 1872755652}
   audioSource: {fileID: 1066059079}
+  audioSourceSwim: {fileID: 1066059079}
   jumpSound: {fileID: 8300000, guid: a41ca80c5f9f94c96a2cb6cdb6c39447, type: 3}
+  swimSound: {fileID: 8300000, guid: d15e0084573654abcb1e36e712533ca1, type: 3}
 --- !u!212 &1066059076
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -3036,7 +3040,7 @@ MonoBehaviour:
   footstepSource: {fileID: 1066059079}
   leftFootSound: {fileID: 8300000, guid: c7d1ecf1e3ab94e2699d7987e9c928da, type: 3}
   rightFootSound: {fileID: 8300000, guid: 918f89b4869c44382b73848c15ee31c2, type: 3}
-  stepInterval: 0.3
+  stepInterval: 0.4
 --- !u!82 &1066059079
 AudioSource:
   m_ObjectHideFlags: 0
@@ -3050,7 +3054,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 0.3
+  m_Volume: 0.05
   m_Pitch: 1
   Loop: 0
   Mute: 0

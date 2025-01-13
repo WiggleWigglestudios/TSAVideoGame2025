@@ -44,8 +44,12 @@ public class Player : MonoBehaviour
     public ItemUIManager itemUIManager;
 
     // Audio
-    public AudioSource audioSource; 
+    public AudioSource audioSource;
+    public AudioSource audioSourceSwim; 
     public AudioClip jumpSound; 
+    public AudioClip swimSound;
+    private float swimSoundCooldown = 1.0f;
+    private float nextSwimSoundTime = 0f;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -56,6 +60,7 @@ public class Player : MonoBehaviour
         pos -= new Vector2(0.5f, 0.5f);
 
         audioSource = GetComponent<AudioSource>();
+        audioSourceSwim = GetComponent<AudioSource>();
     }
 
     private void Update()
@@ -143,10 +148,20 @@ public class Player : MonoBehaviour
             }
         }
 
-
         //swimming
         if (inWater)
         {
+            // Play swim audio
+
+            if (Time.time >= nextSwimSoundTime)
+            {
+                if (audioSourceSwim != null && swimSound != null)
+                {
+                    audioSourceSwim.PlayOneShot(swimSound);
+                    nextSwimSoundTime = Time.time + swimSoundCooldown;
+                }
+            }
+            
             if (((Input.GetKey(KeyCode.W) && !UsesArrowKeys) || (Input.GetKey(KeyCode.UpArrow) && UsesArrowKeys)))
             {
                 vel.y += -gravity * jumpHeight/4.0f*Time.deltaTime* WaterDepth()*3.0f;
