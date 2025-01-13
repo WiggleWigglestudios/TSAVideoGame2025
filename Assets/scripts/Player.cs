@@ -17,8 +17,8 @@ public class Player : MonoBehaviour
     public int maxJumps;
     public float jumps;
     bool canJump;
-    bool grounded;
-    bool inWater;
+    public bool grounded;
+    public bool inWater;
 
     public LevelManager levelManager;
 
@@ -42,6 +42,10 @@ public class Player : MonoBehaviour
 
     public Player otherPlayer;
     public ItemUIManager itemUIManager;
+
+    // Audio
+    public AudioSource audioSource; 
+    public AudioClip jumpSound; 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -50,6 +54,8 @@ public class Player : MonoBehaviour
         spriteRenderer.sprite = playerSprites[4];
         pos = transform.position;
         pos -= new Vector2(0.5f, 0.5f);
+
+        audioSource = GetComponent<AudioSource>();
     }
 
     private void Update()
@@ -129,6 +135,12 @@ public class Player : MonoBehaviour
             //1/2mv^2=mgh    1/2v^2=gh   sqrt(2gh)=v
             vel.y = Mathf.Sqrt(Mathf.Abs(2 * gravity * jumpHeight));
             grounded = false;
+
+            // Play jump audio
+            if (audioSource != null && jumpSound != null)
+            {
+                audioSource.PlayOneShot(jumpSound);
+            }
         }
 
 
