@@ -100,10 +100,10 @@ public class Player : MonoBehaviour
         if (grounded)
         {
             //friction resistance
-            Debug.Log(fixedToFloating(vel.x)+" "+ Mathf.Pow(groundFriction, Time.deltaTime)+" "+ 
+            /*Debug.Log(fixedToFloating(vel.x)+" "+ Mathf.Pow(groundFriction, Time.deltaTime)+" "+ 
                 Mathf.Pow(groundFriction, Time.deltaTime)+" "+
                 fixedToFloating(floatingToFixed(Mathf.Pow(groundFriction, Time.deltaTime))) + " " +
-                fixedToFloating(fixedPointMult(vel.x, floatingToFixed(Mathf.Pow(groundFriction, Time.deltaTime)))));
+                fixedToFloating(fixedPointMult(vel.x, floatingToFixed(Mathf.Pow(groundFriction, Time.deltaTime)))));*/
             vel.x = fixedPointMult(vel.x,floatingToFixed(Mathf.Pow(groundFriction, Time.deltaTime)));
             // vel.y *= Mathf.Pow(0.01f, Time.deltaTime);
         }
@@ -151,11 +151,13 @@ public class Player : MonoBehaviour
         {
             if (((Input.GetKey(KeyCode.W) && !UsesArrowKeys) || (Input.GetKey(KeyCode.UpArrow) && UsesArrowKeys)))
             {
-                vel.y += floatingToFixed(-gravity * jumpHeight / 4.0f * Time.deltaTime * WaterDepth() * 1.2f);
+                vel.y += floatingToFixed(-gravity * jumpHeight / 4.0f * Time.deltaTime * Mathf.Max(1.0f, WaterDepth()) * 1.2f);
                 float depth = WaterDepth();
-                if (depth < 0.1f && vel.y > 0)
+                Debug.Log(depth + " " + vel.y); 
+                if (depth < 0.5f && vel.y > 0)
                 {
-                    pos.y += floatingToFixed(0.1f);
+                   // pos.y += floatingToFixed(0.5f);
+                    vel.y += floatingToFixed(-gravity*10.0f * Time.deltaTime);
                 }
             }
             if (((Input.GetKey(KeyCode.S) && !UsesArrowKeys) || (Input.GetKey(KeyCode.DownArrow) && UsesArrowKeys)))
@@ -277,13 +279,13 @@ public class Player : MonoBehaviour
             vel.y= fixedPointMult(vel.y,floatingToFixed(Mathf.Pow(0.1f, Time.deltaTime)));
 
             vel.x = Mathf.Clamp(vel.x, floatingToFixed(-2.8f), floatingToFixed(2.8f));
-            vel.y = Mathf.Clamp(vel.y, floatingToFixed(-10.0f), floatingToFixed(10.0f));
+            vel.y = Mathf.Clamp(vel.y, floatingToFixed(-8.0f), floatingToFixed(8.0f));
 
             //depth estimate
             float depth = WaterDepth();
 
 
-            vel.y -= floatingToFixed(gravity * depth * 1.02f * Time.fixedDeltaTime);
+            vel.y -= floatingToFixed(gravity * Mathf.Max(depth,1.0f) * 1.5f * Time.fixedDeltaTime);
         }
         else { inWater = false; }
 
@@ -396,7 +398,7 @@ public class Player : MonoBehaviour
         {
             checkPointPos = newCheckPointPos + floatingToFixed(new Vector2(0, 0.5f));
             checkPointHits.Add(checkPointPos);
-            levelManager.getLevel(newCheckPointPos).checkPointHits++;
+            levelManager.getLevel(fixedToFloating(newCheckPointPos)).checkPointHits++;
         }
     }
 
