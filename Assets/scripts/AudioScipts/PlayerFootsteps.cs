@@ -12,7 +12,6 @@ public class PlayerFootsteps : MonoBehaviour
 
     void Start()
     {
-        // Grab player script
         playerScript = GetComponent<Player>();
         if (footstepSource == null)
         {
@@ -48,7 +47,6 @@ public class PlayerFootsteps : MonoBehaviour
 
     void PlayFootstep()
     {
-        // Alternate between left and right foot sounds
         footstepSource.clip = isLeftFoot ? leftFootSound : rightFootSound;
         footstepSource.Play();
         isLeftFoot = !isLeftFoot; 
