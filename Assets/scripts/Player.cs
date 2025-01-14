@@ -45,11 +45,14 @@ public class Player : MonoBehaviour
 
     // Audio
     public AudioSource audioSource;
-    public AudioSource audioSourceSwim; 
     public AudioClip jumpSound; 
     public AudioClip swimSound;
+    public AudioClip deathSound;
+    public AudioClip checkPointSound;
     private float swimSoundCooldown = 1.0f;
     private float nextSwimSoundTime = 0f;
+    private float deathDelay = 1.0f;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -60,7 +63,6 @@ public class Player : MonoBehaviour
         pos -= new Vector2(0.5f, 0.5f);
 
         audioSource = GetComponent<AudioSource>();
-        audioSourceSwim = GetComponent<AudioSource>();
     }
 
     private void Update()
@@ -155,9 +157,9 @@ public class Player : MonoBehaviour
 
             if (Time.time >= nextSwimSoundTime)
             {
-                if (audioSourceSwim != null && swimSound != null)
+                if (audioSource != null && swimSound != null)
                 {
-                    audioSourceSwim.PlayOneShot(swimSound);
+                    audioSource.PlayOneShot(swimSound);
                     nextSwimSoundTime = Time.time + swimSoundCooldown;
                 }
             }
@@ -392,6 +394,16 @@ public class Player : MonoBehaviour
 
     void checkPointCheck(Vector2Int newCheckPointPos) 
     {
+        Vector2Int tempCheckPointPos = Vector2Int.FloorToInt(checkPointPos);
+        // Audio
+        if (tempCheckPointPos!=newCheckPointPos)
+        {
+            if (audioSource != null && checkPointSound != null)
+            {
+                audioSource.PlayOneShot(checkPointSound);
+            }
+        }
+
         bool hasBeen = false;
 
         for(int i=0;i<checkPointHits.Count;i++)
@@ -408,6 +420,7 @@ public class Player : MonoBehaviour
             checkPointHits.Add(checkPointPos);
             levelManager.getLevel(newCheckPointPos).checkPointHits++;
         }
+        
     }
 
     float WaterDepth()
@@ -435,12 +448,21 @@ public class Player : MonoBehaviour
 
     void Died()
     {
-       pos = checkPointPos;
-       vel = new Vector2(0, 0);
-       maxJumps = 1;
-       jumpHeight = 4.5f;
-    }
+        pos = checkPointPos;
+        vel = new Vector2(0, 0);
+        maxJumps = 1;
+        jumpHeight = 4.5f;
 
+        // Audio   
+        if (Time.time >= deathDelay)
+        {
+            if (audioSource != null && deathSound != null)
+            {
+                audioSource.PlayOneShot(deathSound);
+                deathDelay = Time.time + 0.5f;
+            }
+        }
+    }
 
     void updateAnimations()
     {

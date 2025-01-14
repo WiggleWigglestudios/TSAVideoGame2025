@@ -1801,9 +1801,10 @@ MonoBehaviour:
   otherPlayer: {fileID: 1066059075}
   itemUIManager: {fileID: 1164722710}
   audioSource: {fileID: 390477457}
-  audioSourceSwim: {fileID: 390477457}
   jumpSound: {fileID: 8300000, guid: a41ca80c5f9f94c96a2cb6cdb6c39447, type: 3}
   swimSound: {fileID: 8300000, guid: d15e0084573654abcb1e36e712533ca1, type: 3}
+  deathSound: {fileID: 8300000, guid: 7163f51183d514ba6995fb3bb866dc07, type: 3}
+  checkPointSound: {fileID: 8300000, guid: e234323a7c43f4e028e2dde9d53c7f40, type: 3}
 --- !u!212 &390477453
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2952,9 +2953,10 @@ MonoBehaviour:
   otherPlayer: {fileID: 390477452}
   itemUIManager: {fileID: 1872755652}
   audioSource: {fileID: 1066059079}
-  audioSourceSwim: {fileID: 1066059079}
   jumpSound: {fileID: 8300000, guid: a41ca80c5f9f94c96a2cb6cdb6c39447, type: 3}
   swimSound: {fileID: 8300000, guid: d15e0084573654abcb1e36e712533ca1, type: 3}
+  deathSound: {fileID: 8300000, guid: 7163f51183d514ba6995fb3bb866dc07, type: 3}
+  checkPointSound: {fileID: 8300000, guid: e234323a7c43f4e028e2dde9d53c7f40, type: 3}
 --- !u!212 &1066059076
 SpriteRenderer:
   m_ObjectHideFlags: 0
