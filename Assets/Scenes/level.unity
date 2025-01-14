@@ -2327,6 +2327,8 @@ MonoBehaviour:
   checkPointPos: {x: 0, y: 0}
   jumpHeight: 4.5
   speed: 30
+  groundFriction: 0.01
+  airResistance: 0.05
   maxJumps: 1
   jumps: 0
   levelManager: {fileID: 1902048385}
@@ -4440,6 +4442,8 @@ MonoBehaviour:
   checkPointPos: {x: 0, y: 0}
   jumpHeight: 4.5
   speed: 30
+  groundFriction: 0.01
+  airResistance: 0.05
   maxJumps: 1
   jumps: 0
   levelManager: {fileID: 1902048385}

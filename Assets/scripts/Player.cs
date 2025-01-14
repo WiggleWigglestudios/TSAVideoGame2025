@@ -7,12 +7,14 @@ using static UnityEditor.PlayerSettings;
 
 public class Player : MonoBehaviour
 {
-    public Vector2 pos;
-    public Vector2 vel;
-    public Vector2 checkPointPos;
+    public Vector2Int pos;
+    public Vector2Int vel;
+    public Vector2Int checkPointPos;
     public float jumpHeight;
     float normalJumpHeight;
     public float speed;
+    public float groundFriction;
+    public float airResistance;
     float normalSpeed;
     public int maxJumps;
     public float jumps;
@@ -34,9 +36,9 @@ public class Player : MonoBehaviour
     float AnimationFrameCountdown = 0.25f;
     public bool facing;
 
-    public List<Item> items=new List<Item>();
+    public List<Item> items = new List<Item>();
 
-    public List<Vector2> checkPointHits = new List<Vector2>();
+    public List<Vector2Int> checkPointHits = new List<Vector2Int>();
     [Serialize]
     public List<Vector2> itemtHits = new List<Vector2>();
 
@@ -48,31 +50,39 @@ public class Player : MonoBehaviour
         normalSpeed = speed;
         normalJumpHeight = jumpHeight;
         spriteRenderer.sprite = playerSprites[4];
-        pos = transform.position;
-        pos -= new Vector2(0.5f, 0.5f);
+        pos = floatingToFixed((Vector2)transform.position);
+        pos -= floatingToFixed(new Vector2(0.5f, 0.5f));
+
+        //Debug.Log("Maths");
+        Debug.Log(floatingToFixed(0.7173767f) + " " + floatingToFixed(0.997895f) + " " + fixedPointMult(floatingToFixed(0.7173767f) , floatingToFixed(0.997895f)));
+        Debug.Log(fixedToFloating(fixedPointMult(floatingToFixed(0.7173767f), floatingToFixed(0.997895f))));
+
     }
 
     private void Update()
     {
+
+        //Debug.Log(pos.x + " " + floatingToFixed(pos.x) + " " + fixedToFloating(floatingToFixed(pos.x)));
+        //Debug.Log(fixedToFloating(pos) + " " + fixedToFloating(vel));
         updateAnimations();
         itemUpdate();
     }
 
     private void FixedUpdate()
     {
-       
+
         // Debug.Log(levelManager.getTile(transform.position));
 
-        vel.y += gravity * Time.fixedDeltaTime;
+        vel.y += floatingToFixed(gravity * Time.fixedDeltaTime);
         int subSteps = 4;
         playerInputs(1);
         grounded = false;
+
+        //Debug.Log(fixedPointMult(vel, floatingToFixed(Time.fixedDeltaTime / (float)subSteps)) + " " + (Time.fixedDeltaTime / (float)subSteps));
+        //Debug.Log(fixedToFloating(fixedPointMult(vel, floatingToFixed(Time.fixedDeltaTime / (float)subSteps))) +" "+fixedToFloating(vel) +" "+" "+(Time.fixedDeltaTime / (float)subSteps));
         for (int i = 0; i < subSteps; i++)
         {
-
-
-
-            pos += vel * Time.fixedDeltaTime / (float)subSteps;
+            pos +=fixedPointMult(vel , floatingToFixed(Time.fixedDeltaTime / (float)subSteps));
             resolveTerrainCollisions();
         }
         if (grounded)
@@ -86,17 +96,21 @@ public class Player : MonoBehaviour
         }
 
 
-        transform.position = new Vector3(pos.x+0.5f, pos.y+0.5f, -5);
+        transform.position = new Vector3(fixedToFloating(pos.x) + 0.5f, fixedToFloating(pos.y) + 0.5f, -5);
         if (grounded)
         {
             //friction resistance
-            vel.x *= Mathf.Pow(0.01f, Time.deltaTime);
+            Debug.Log(fixedToFloating(vel.x)+" "+ Mathf.Pow(groundFriction, Time.deltaTime)+" "+ 
+                Mathf.Pow(groundFriction, Time.deltaTime)+" "+
+                fixedToFloating(floatingToFixed(Mathf.Pow(groundFriction, Time.deltaTime))) + " " +
+                fixedToFloating(fixedPointMult(vel.x, floatingToFixed(Mathf.Pow(groundFriction, Time.deltaTime)))));
+            vel.x = fixedPointMult(vel.x,floatingToFixed(Mathf.Pow(groundFriction, Time.deltaTime)));
             // vel.y *= Mathf.Pow(0.01f, Time.deltaTime);
         }
         else
         {
             //air resistance
-            vel.x *= Mathf.Pow(0.05f, Time.deltaTime);
+            vel.x = fixedPointMult(vel.x,floatingToFixed(Mathf.Pow(airResistance, Time.deltaTime)));
             // vel.y *= Mathf.Pow(0.05f, Time.deltaTime);
         }
 
@@ -106,15 +120,15 @@ public class Player : MonoBehaviour
 
     void playerInputs(int subSteps)
     {
-       
+
         if ((Input.GetKey(KeyCode.D) && !UsesArrowKeys) || (Input.GetKey(KeyCode.RightArrow) && UsesArrowKeys))
         {
-            vel.x += speed * Time.fixedDeltaTime / (float)subSteps;
+            vel.x += floatingToFixed(speed * Time.fixedDeltaTime / (float)subSteps);
             facing = true;
         }
         if ((Input.GetKey(KeyCode.A) && !UsesArrowKeys) || (Input.GetKey(KeyCode.LeftArrow) && UsesArrowKeys))
         {
-            vel.x -= speed * Time.fixedDeltaTime / (float)subSteps;
+            vel.x -= floatingToFixed(speed * Time.fixedDeltaTime / (float)subSteps);
             facing = false;
         }
 
@@ -122,12 +136,12 @@ public class Player : MonoBehaviour
         {
             canJump = true;
         }
-        if (((Input.GetKey(KeyCode.W) && !UsesArrowKeys) || (Input.GetKey(KeyCode.UpArrow) && UsesArrowKeys)) && canJump && jumps > 0&&!inWater)
+        if (((Input.GetKey(KeyCode.W) && !UsesArrowKeys) || (Input.GetKey(KeyCode.UpArrow) && UsesArrowKeys)) && canJump && jumps > 0 && !inWater)
         {
             jumps--;
             canJump = false;
             //1/2mv^2=mgh    1/2v^2=gh   sqrt(2gh)=v
-            vel.y = Mathf.Sqrt(Mathf.Abs(2 * gravity * jumpHeight));
+            vel.y = floatingToFixed(Mathf.Sqrt(Mathf.Abs(2 * gravity * jumpHeight)));
             grounded = false;
         }
 
@@ -137,16 +151,16 @@ public class Player : MonoBehaviour
         {
             if (((Input.GetKey(KeyCode.W) && !UsesArrowKeys) || (Input.GetKey(KeyCode.UpArrow) && UsesArrowKeys)))
             {
-                vel.y += -gravity * jumpHeight/4.0f*Time.deltaTime* WaterDepth()*3.0f;
+                vel.y += floatingToFixed(-gravity * jumpHeight / 4.0f * Time.deltaTime * WaterDepth() * 3.0f);
                 float depth = WaterDepth();
-                if (depth < 0.1f&&vel.y>0) 
+                if (depth < 0.1f && vel.y > 0)
                 {
-                    pos.y += 0.1f;
+                    pos.y += floatingToFixed(0.1f);
                 }
             }
             if (((Input.GetKey(KeyCode.S) && !UsesArrowKeys) || (Input.GetKey(KeyCode.DownArrow) && UsesArrowKeys)))
             {
-                vel.y -= -gravity * jumpHeight / 4.0f * Time.deltaTime* WaterDepth()*3.0f;
+                vel.y -= floatingToFixed(-gravity * jumpHeight / 4.0f * Time.deltaTime * WaterDepth() * 3.0f);
             }
         }
 
@@ -164,73 +178,73 @@ public class Player : MonoBehaviour
 
 
         // //Debug.Log("1 " + getTile(pos));
-        if (levelManager.getTile(new Vector2(pos.x, pos.y)) == 1)
+        if (levelManager.getTile(fixedToFloating(pos)) == 1)
         {
             //   //Debug.Log("1");
-            if (Mathf.Floor(pos.x) + 1 - pos.x < Mathf.Floor(pos.y) + 1 - pos.y)
+            if (fixedFloor(pos.x) + 65536 - pos.x < fixedFloor(pos.y) + 65536 - pos.y)
             {
                 //Debug.Log("1 x");
-                pos.x = Mathf.Floor(pos.x) + 1;
+                pos.x = fixedFloor(pos.x) + 65536;
                 vel.x = Mathf.Max(0, vel.x);
             }
             else
             {
                 //Debug.Log("1 y");
-                pos.y = Mathf.Floor(pos.y) + 1;
+                pos.y = fixedFloor(pos.y) + 65536;
                 vel.y = Mathf.Max(0, vel.y);
                 grounded = true;
             }
         }
         //Debug.Log("2 " + getTile(new Vector2(pos.x + 1, pos.y)));
-        if (levelManager.getTile(new Vector2(pos.x + 1, pos.y)) == 1)
+        if (levelManager.getTile(fixedToFloating(pos) + new Vector2(1, 0)) == 1)
         {
             //Debug.Log("2");
-            if (pos.x - Mathf.Floor(pos.x) < Mathf.Floor(pos.y) + 1 - pos.y)
+            if (pos.x - fixedFloor(pos.x) < fixedFloor(pos.y) + 65536 - pos.y)
             {
                 //Debug.Log("2 x");
-                pos.x = Mathf.Floor(pos.x);
+                pos.x = fixedFloor(pos.x);
                 vel.x = Mathf.Min(0, vel.x);
             }
             else
             {
                 //Debug.Log("2 y");
-                pos.y = Mathf.Floor(pos.y) + 1;
+                pos.y = fixedFloor(pos.y) + 65536;
                 vel.y = Mathf.Max(0, vel.y);
                 grounded = true;
             }
         }
         //Debug.Log("3 " + getTile(new Vector2(pos.x, pos.y+1)));
-        if (levelManager.getTile(new Vector2(pos.x, pos.y + 1)) == 1)
+        if (levelManager.getTile(fixedToFloating(pos) + new Vector2(0, 1)) == 1)
         {
             //Debug.Log("3");
 
-            if (Mathf.Floor(pos.x) + 1 - pos.x < pos.y - Mathf.Floor(pos.y))
+            if (fixedFloor(pos.x) + 65536 - pos.x < pos.y - fixedFloor(pos.y))
             {
                 //Debug.Log("3 x");
-                pos.x = Mathf.Floor(pos.x) + 1;
+                pos.x = fixedFloor(pos.x) + 65536;
                 vel.x = Mathf.Max(0, vel.x);
             }
             else
             {
                 //Debug.Log("3 y");
-                pos.y = Mathf.Floor(pos.y);
+                pos.y = fixedFloor(pos.y);
                 vel.y = Mathf.Min(0, vel.y);
             }
         }
         //Debug.Log("4 " + getTile(new Vector2(pos.x + 1, pos.y+1)));
-        if (levelManager.getTile(new Vector2(pos.x + 1, pos.y + 1)) == 1)
+        if (levelManager.getTile(fixedToFloating(pos) + new Vector2(1, 1)) == 1)
         {
             //Debug.Log("4");
-            if (pos.x - Mathf.Floor(pos.x) < pos.y - Mathf.Floor(pos.y))
+            if (pos.x - fixedFloor(pos.x) < pos.y - fixedFloor(pos.y))
             {
                 ////Debug.Log("4 x");
-                pos.x = Mathf.Floor(pos.x);
+                pos.x = fixedFloor(pos.x);
                 vel.x = Mathf.Min(0, vel.x);
             }
             else
             {
                 //Debug.Log("4 y");
-                pos.y = Mathf.Floor(pos.y);
+                pos.y = fixedFloor(pos.y);
                 vel.y = Mathf.Min(0, vel.y);
             }
         }
@@ -244,47 +258,49 @@ public class Player : MonoBehaviour
     void tileCheck()
     {
         //checkPoint check
-        if (levelManager.getTile(new Vector2Int((int)pos.x, (int)pos.y)) == 4) {            checkPointCheck(new Vector2Int((int)pos.x, (int)pos.y)); }
-        if (levelManager.getTile(new Vector2Int((int)pos.x + 1, (int)pos.y)) == 4) {        checkPointCheck(new Vector2Int((int)pos.x+1, (int)pos.y)); }
-        if (levelManager.getTile(new Vector2Int((int)pos.x, (int)pos.y + 1)) == 4) {        checkPointCheck(new Vector2Int((int)pos.x, (int)pos.y+1)); }
-        if (levelManager.getTile(new Vector2Int((int)pos.x + 1, (int)pos.y + 1)) == 4) {    checkPointCheck(new Vector2Int((int)pos.x+1, (int)pos.y+1)); }
+
+        if (levelManager.getTile(fixedToInt(pos)) == 4) { checkPointCheck(pos); }
+        if (levelManager.getTile(fixedToInt(pos) + new Vector2Int(1, 0)) == 4) { checkPointCheck(pos + intToFixed(new Vector2Int(1, 0))); }
+        if (levelManager.getTile(fixedToInt(pos) + new Vector2Int(0, 1)) == 4) { checkPointCheck(pos + intToFixed(new Vector2Int(0, 1))); }
+        if (levelManager.getTile(fixedToInt(pos) + new Vector2Int(1, 1)) == 4) { checkPointCheck(pos + intToFixed(new Vector2Int(1, 1))); }
 
         //Death check
-        if (levelManager.getTile(new Vector2(pos.x + 0.5f, pos.y + 0.5f)) == 3) { Died(); }
+        if (levelManager.getTile(fixedToFloating(pos) + new Vector2(0.5f, 0.5f)) == 3) { Died(); }
 
 
         //water check
-        if (levelManager.getTile(new Vector2(pos.x + 0.5f, pos.y)) == 2)
+        if (levelManager.getTile(fixedToFloating(pos) + new Vector2(0.5f, 0.5f)) == 2)
         {
             inWater = true;
             //damping
-            vel.x *= Mathf.Pow(0.1f, Time.deltaTime);
-            vel.y *= Mathf.Pow(0.1f, Time.deltaTime);
+            vel.x =fixedPointMult(vel.x,floatingToFixed(Mathf.Pow(0.1f, Time.deltaTime)));
+            vel.y= fixedPointMult(vel.y,floatingToFixed(Mathf.Pow(0.1f, Time.deltaTime)));
 
-            vel.x = Mathf.Clamp(vel.x, -1.4f, 1.4f);
-            vel.y = Mathf.Clamp(vel.y, -20.0f, 20.0f);
+            vel.x = Mathf.Clamp(vel.x, floatingToFixed(-1.4f), floatingToFixed(1.4f));
+            vel.y = Mathf.Clamp(vel.y, floatingToFixed(-20.0f), floatingToFixed(20.0f));
 
             //depth estimate
             float depth = WaterDepth();
 
 
-            vel.y -= gravity * depth * 2.0f * Time.fixedDeltaTime;
-        }else { inWater = false; }
+            vel.y -= floatingToFixed(gravity * depth * 2.0f * Time.fixedDeltaTime);
+        }
+        else { inWater = false; }
 
         //item check
-        if (levelManager.getTile(new Vector2(pos.x + 0.5f, pos.y+0.5f)) == 5)
+        if (levelManager.getTile(fixedToFloating(pos) + new Vector2(0.5f, 0.5f)) == 5)
         {
-            getItem(new Vector2Int((int)pos.x , (int)pos.y));
+            getItem(fixedToInt(pos));
         }
     }
 
-    void getItem(Vector2Int pos)
+    void getItem(Vector2Int inPos)
     {
         bool hasBeen = false;
 
         for (int i = 0; i < itemtHits.Count; i++)
         {
-            if (Vector2.Distance(itemtHits[i], pos) < 5)
+            if (Vector2.Distance(itemtHits[i], inPos) < 5)
             {
                 hasBeen = true;
             }
@@ -292,26 +308,26 @@ public class Player : MonoBehaviour
 
         if (!hasBeen)
         {
-            itemtHits.Add(pos);
+            itemtHits.Add(inPos);
 
             float rand = Random.Range(0.0f, 1.0f);
             if (rand < 0.2f)
             {
                 items.Add(new Item(0, 0, 15, 2, normalJumpHeight, normalSpeed));
-                itemUIManager.addItem( items.Count - 1);
+                itemUIManager.addItem(items.Count - 1);
                 Debug.Log("double jump");
             }
             else if (rand < 0.4f)
             {
 
                 items.Add(new Item(0, 1, 15, 1, normalJumpHeight, normalSpeed * 1.5f));
-                itemUIManager.addItem( items.Count - 1);
+                itemUIManager.addItem(items.Count - 1);
                 Debug.Log("faster");
             }
             else if (rand < 0.6f)
             {
                 items.Add(new Item(0, 2, 15, 1, normalJumpHeight * 1.5f, normalSpeed));
-                itemUIManager.addItem( items.Count - 1);
+                itemUIManager.addItem(items.Count - 1);
                 Debug.Log("higher jump");
             }
             else if (rand < 0.70f)
@@ -332,17 +348,17 @@ public class Player : MonoBehaviour
                 otherPlayer.itemUIManager.addItem(otherPlayer.items.Count - 1);
                 Debug.Log("other player cant jump as high");
             }
-           
+
 
         }
     }
 
-    void itemUpdate() 
+    void itemUpdate()
     {
         speed = normalSpeed;
         maxJumps = 1;
         jumpHeight = normalJumpHeight;
-        
+
         for (int i = 0; i < items.Count; i++)
         {
             if (items[i].effectTimer > 0)
@@ -351,11 +367,12 @@ public class Player : MonoBehaviour
                 {
                     speed = items[i].speed;
                     maxJumps = items[i].maxJumps;
-                    jumpHeight= items[i].jumpHeight;
+                    jumpHeight = items[i].jumpHeight;
                     items[i].effectTimer -= Time.deltaTime;
                 }
             }
-            else {
+            else
+            {
                 itemUIManager.removeItem(i);
                 items.RemoveAt(i);
                 i--;
@@ -363,13 +380,13 @@ public class Player : MonoBehaviour
         }
     }
 
-    void checkPointCheck(Vector2Int newCheckPointPos) 
+    void checkPointCheck(Vector2Int newCheckPointPos)
     {
         bool hasBeen = false;
 
-        for(int i=0;i<checkPointHits.Count;i++)
+        for (int i = 0; i < checkPointHits.Count; i++)
         {
-            if (Vector2.Distance(checkPointHits[i],newCheckPointPos)<5) 
+            if (Vector2.Distance(fixedToInt(checkPointHits[i]), fixedToInt(newCheckPointPos)) < 5)
             {
                 hasBeen = true;
             }
@@ -377,7 +394,7 @@ public class Player : MonoBehaviour
 
         if (!hasBeen)
         {
-            checkPointPos = newCheckPointPos + new Vector2(0, 0.5f);
+            checkPointPos = floatingToFixed(newCheckPointPos + new Vector2(0, 0.5f));
             checkPointHits.Add(checkPointPos);
             levelManager.getLevel(newCheckPointPos).checkPointHits++;
         }
@@ -385,13 +402,13 @@ public class Player : MonoBehaviour
 
     float WaterDepth()
     {
-        if (levelManager.getTile(new Vector2(pos.x + 0.5f, pos.y)) == 2)
+        if (levelManager.getTile(fixedToFloating(pos) + new Vector2(0.5f, 0.0f)) == 2)
         {
             //depth estimate
             float depth = 0;
             for (int i = 0; i < 10; i++)
             {
-                if (levelManager.getTile(new Vector2(pos.x + 0.5f, pos.y + Mathf.Pow(1.5f, i) * 0.1f)) == 2)
+                if (levelManager.getTile(fixedToFloating(pos) + new Vector2(0.5f, Mathf.Pow(1.5f, i) * 0.1f)) == 2)
                 {
                     depth = Mathf.Pow(1.5f, i) * 0.1f;
                 }
@@ -408,33 +425,34 @@ public class Player : MonoBehaviour
 
     void Died()
     {
-       pos = checkPointPos;
-       vel = new Vector2(0, 0);
-       maxJumps = 1;
-       jumpHeight = 4.5f;
+        pos = checkPointPos;
+        vel = new Vector2Int(0, 0);
+        maxJumps = 1;
+        jumpHeight = 4.5f;
     }
 
 
     void updateAnimations()
     {
         AnimationFrameCountdown -= Time.deltaTime;
-        if(AnimationFrameCountdown < 0 ) 
+        if (AnimationFrameCountdown < 0)
         {
-            AnimationFrameCountdown = 1.0f/AnimationFrameRate;
+            AnimationFrameCountdown = 1.0f / AnimationFrameRate;
             AnimationFrameCount++;
             AnimationFrameCount = AnimationFrameCount % 4;
         }
-        if (Mathf.Abs(vel.x) > 0.25f)
+        if (Mathf.Abs(fixedToFloating(vel.x)) > 0.25f)
         {
             if (grounded || inWater)
             {
                 spriteRenderer.sprite = playerSprites[AnimationFrameCount];
             }
-            else {
+            else
+            {
                 spriteRenderer.sprite = playerSprites[1];
             }
         }
-        else 
+        else
         {
             AnimationFrameCountdown = 1.0f / AnimationFrameRate;
             AnimationFrameCount = 0;
@@ -442,7 +460,79 @@ public class Player : MonoBehaviour
         }
         spriteRenderer.flipX = !facing;
     }
-    
+
+    float fixedToFloating(int input)
+    {
+        float output = input;
+        output /= 65536.0f;
+        return output;
+    }
+    int floatingToFixed(float input)
+    {
+        input *= 65536.0f;
+        return (int)input;
+    }
 
 
+
+    Vector2 fixedToFloating(Vector2Int input)
+    {
+        Vector2 output = input;
+        output /= 65536.0f;
+        return output;
+    }
+    Vector2Int floatingToFixed(Vector2 input)
+    {
+        input *= 65536.0f;
+        return new Vector2Int((int)input.x, (int)input.y);
+    }
+
+    Vector3 fixedToFloating(Vector3Int input)
+    {
+        Vector3 output = input;
+        output /= 65536.0f;
+        return output;
+    }
+    Vector3Int floatingToFixed(Vector3 input)
+    {
+        input *= 65536.0f;
+        return new Vector3Int((int)input.x, (int)input.y, (int)input.z);
+    }
+    int fixedFloor(int input)
+    {
+        return (input >> 16) << 16;
+    }
+
+    int fixedPointMult(int a, int b)
+    {
+        int sign =(int)( Mathf.Sign(a) * Mathf.Sign(b));
+        a = Mathf.Abs(a);
+        b = Mathf.Abs(b);
+        uint byte1 = (((uint)a & 0b1111111111111111) * ((uint)b & 0b1111111111111111))>>16;
+        uint byte2 = ((uint)a >>16 & 0b1111111111111111) * ((uint)b & 0b1111111111111111);
+        uint byte3 = ((uint)a & 0b1111111111111111) * ((uint)b >>16 & 0b1111111111111111);
+        uint byte4 = (((uint)a>>16 & 0b1111111111111111) * (((uint)b >> 16) & 0b1111111111111111)) <<16;
+        //Debug.Log(byte4+" "+fixedToFloating(byte4)+" "+ fixedToFloating(byte3) + " "+ fixedToFloating(byte2) + " "+ fixedToFloating(byte1));
+        return sign*((int)(byte4)+ (int)(byte3)+ (int)(byte2)+ (int)(byte1));
+
+    }
+    Vector2Int fixedPointMult(Vector2Int a, Vector2Int b)
+    {
+        return new Vector2Int(fixedPointMult(a.x, b.x), fixedPointMult(a.y, b.y));
+    }
+    Vector2Int fixedPointMult(Vector2Int a, int b)
+    {
+        return new Vector2Int(fixedPointMult(a.x, b), fixedPointMult(a.y, b));
+    }
+
+    Vector2Int fixedToInt(Vector2Int input)
+    {
+        return new Vector2Int(input.x >> 16, input.y >> 16);
+    }
+    Vector2Int intToFixed(Vector2Int input)
+    {
+        return new Vector2Int(input.x << 16, input.y << 16);
+    }
 }
+
+
