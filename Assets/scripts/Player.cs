@@ -44,6 +44,10 @@ public class Player : MonoBehaviour
 
     public Player otherPlayer;
     public ItemUIManager itemUIManager;
+
+    public GameObject checkPointParticles;
+    public GameObject ItemParticles;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -396,6 +400,7 @@ public class Player : MonoBehaviour
 
         if (!hasBeen)
         {
+            Instantiate(checkPointParticles, fixedToFloating(newCheckPointPos),Quaternion.identity) ;
             checkPointPos = newCheckPointPos + floatingToFixed(new Vector2(0, 0.5f));
             checkPointHits.Add(checkPointPos);
             levelManager.getLevel(fixedToFloating(newCheckPointPos)).checkPointHits++;
