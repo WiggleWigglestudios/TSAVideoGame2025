@@ -151,7 +151,7 @@ public class Player : MonoBehaviour
         {
             if (((Input.GetKey(KeyCode.W) && !UsesArrowKeys) || (Input.GetKey(KeyCode.UpArrow) && UsesArrowKeys)))
             {
-                vel.y += floatingToFixed(-gravity * jumpHeight / 4.0f * Time.deltaTime * WaterDepth() * 3.0f);
+                vel.y += floatingToFixed(-gravity * jumpHeight / 4.0f * Time.deltaTime * WaterDepth() * 1.2f);
                 float depth = WaterDepth();
                 if (depth < 0.1f && vel.y > 0)
                 {
@@ -160,7 +160,7 @@ public class Player : MonoBehaviour
             }
             if (((Input.GetKey(KeyCode.S) && !UsesArrowKeys) || (Input.GetKey(KeyCode.DownArrow) && UsesArrowKeys)))
             {
-                vel.y -= floatingToFixed(-gravity * jumpHeight / 4.0f * Time.deltaTime * WaterDepth() * 3.0f);
+                vel.y -= floatingToFixed(-gravity * jumpHeight / 4.0f * Time.deltaTime * WaterDepth() * 1.2f);
             }
         }
 
@@ -276,14 +276,14 @@ public class Player : MonoBehaviour
             vel.x =fixedPointMult(vel.x,floatingToFixed(Mathf.Pow(0.1f, Time.deltaTime)));
             vel.y= fixedPointMult(vel.y,floatingToFixed(Mathf.Pow(0.1f, Time.deltaTime)));
 
-            vel.x = Mathf.Clamp(vel.x, floatingToFixed(-1.4f), floatingToFixed(1.4f));
-            vel.y = Mathf.Clamp(vel.y, floatingToFixed(-20.0f), floatingToFixed(20.0f));
+            vel.x = Mathf.Clamp(vel.x, floatingToFixed(-2.8f), floatingToFixed(2.8f));
+            vel.y = Mathf.Clamp(vel.y, floatingToFixed(-10.0f), floatingToFixed(10.0f));
 
             //depth estimate
             float depth = WaterDepth();
 
 
-            vel.y -= floatingToFixed(gravity * depth * 2.0f * Time.fixedDeltaTime);
+            vel.y -= floatingToFixed(gravity * depth * 1.02f * Time.fixedDeltaTime);
         }
         else { inWater = false; }
 
@@ -394,7 +394,7 @@ public class Player : MonoBehaviour
 
         if (!hasBeen)
         {
-            checkPointPos = floatingToFixed(newCheckPointPos + new Vector2(0, 0.5f));
+            checkPointPos = newCheckPointPos + floatingToFixed(new Vector2(0, 0.5f));
             checkPointHits.Add(checkPointPos);
             levelManager.getLevel(newCheckPointPos).checkPointHits++;
         }
