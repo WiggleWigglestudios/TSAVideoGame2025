@@ -4,6 +4,12 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using static UnityEditor.PlayerSettings;
+//player movement
+//friction after movement
+//fix jump
+//water
+//particles
+
 
 public class Player : MonoBehaviour
 {
@@ -109,6 +115,15 @@ public class Player : MonoBehaviour
                 fixedToFloating(floatingToFixed(Mathf.Pow(groundFriction, Time.deltaTime))) + " " +
                 fixedToFloating(fixedPointMult(vel.x, floatingToFixed(Mathf.Pow(groundFriction, Time.deltaTime)))));*/
             vel.x = fixedPointMult(vel.x,floatingToFixed(Mathf.Pow(groundFriction, Time.deltaTime)));
+
+            if (!((Input.GetKey(KeyCode.D) && !UsesArrowKeys) || (Input.GetKey(KeyCode.RightArrow) && UsesArrowKeys) ||
+                (Input.GetKey(KeyCode.A) && !UsesArrowKeys) || (Input.GetKey(KeyCode.LeftArrow) && UsesArrowKeys)))
+            {
+                vel.x = fixedPointMult(vel.x, floatingToFixed(Mathf.Pow(groundFriction, Time.deltaTime)));
+                vel.x = fixedPointMult(vel.x, floatingToFixed(Mathf.Pow(groundFriction, Time.deltaTime)));
+            }
+
+
             // vel.y *= Mathf.Pow(0.01f, Time.deltaTime);
         }
         else
@@ -198,7 +213,7 @@ public class Player : MonoBehaviour
                 //Debug.Log("1 y");
                 pos.y = fixedFloor(pos.y) + 65536;
                 vel.y = Mathf.Max(0, vel.y);
-                grounded = true;
+                //grounded = true;
             }
         }
         //Debug.Log("2 " + getTile(new Vector2(pos.x + 1, pos.y)));
@@ -216,7 +231,7 @@ public class Player : MonoBehaviour
                 //Debug.Log("2 y");
                 pos.y = fixedFloor(pos.y) + 65536;
                 vel.y = Mathf.Max(0, vel.y);
-                grounded = true;
+                // grounded = true;
             }
         }
         //Debug.Log("3 " + getTile(new Vector2(pos.x, pos.y+1)));
@@ -255,7 +270,10 @@ public class Player : MonoBehaviour
             }
         }
 
-
+        if (levelManager.getTile(fixedToFloating(pos) + new Vector2(0, -1)) == 1)
+        {
+               
+        }
 
 
 
@@ -400,7 +418,7 @@ public class Player : MonoBehaviour
 
         if (!hasBeen)
         {
-            Instantiate(checkPointParticles, fixedToFloating(newCheckPointPos),Quaternion.identity) ;
+            Instantiate(checkPointParticles, fixedToFloating(newCheckPointPos),Quaternion.identity);
             checkPointPos = newCheckPointPos + floatingToFixed(new Vector2(0, 0.5f));
             checkPointHits.Add(checkPointPos);
             levelManager.getLevel(fixedToFloating(newCheckPointPos)).checkPointHits++;
@@ -540,6 +558,13 @@ public class Player : MonoBehaviour
     {
         return new Vector2Int(input.x << 16, input.y << 16);
     }
+
+    bool AABB(Vector2 aMin, Vector2 aMax, Vector2 bMin, Vector2 bMax)
+    {
+        return aMin.x <= bMax.x && aMax.x >= bMin.x &&
+            aMin.y <= bMax.y && aMax.y >= bMin.y;
+    }
+
 }
 
 
