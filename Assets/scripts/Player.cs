@@ -213,7 +213,7 @@ public class Player : MonoBehaviour
                 //Debug.Log("1 y");
                 pos.y = fixedFloor(pos.y) + 65536;
                 vel.y = Mathf.Max(0, vel.y);
-                //grounded = true;
+                grounded = true;
             }
         }
         //Debug.Log("2 " + getTile(new Vector2(pos.x + 1, pos.y)));
@@ -231,7 +231,7 @@ public class Player : MonoBehaviour
                 //Debug.Log("2 y");
                 pos.y = fixedFloor(pos.y) + 65536;
                 vel.y = Mathf.Max(0, vel.y);
-                // grounded = true;
+                grounded = true;
             }
         }
         //Debug.Log("3 " + getTile(new Vector2(pos.x, pos.y+1)));
