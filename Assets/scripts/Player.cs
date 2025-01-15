@@ -64,7 +64,7 @@ public class Player : MonoBehaviour
         pos -= floatingToFixed(new Vector2(0.5f, 0.5f));
 
         //Debug.Log("Maths");
-        Debug.Log(floatingToFixed(0.7173767f) + " " + floatingToFixed(0.997895f) + " " + fixedPointMult(floatingToFixed(0.7173767f) , floatingToFixed(0.997895f)));
+        Debug.Log(floatingToFixed(0.7173767f) + " " + floatingToFixed(0.997895f) + " " + fixedPointMult(floatingToFixed(0.7173767f), floatingToFixed(0.997895f)));
         Debug.Log(fixedToFloating(fixedPointMult(floatingToFixed(0.7173767f), floatingToFixed(0.997895f))));
 
     }
@@ -92,7 +92,7 @@ public class Player : MonoBehaviour
         //Debug.Log(fixedToFloating(fixedPointMult(vel, floatingToFixed(Time.fixedDeltaTime / (float)subSteps))) +" "+fixedToFloating(vel) +" "+" "+(Time.fixedDeltaTime / (float)subSteps));
         for (int i = 0; i < subSteps; i++)
         {
-            pos +=fixedPointMult(vel , floatingToFixed(Time.fixedDeltaTime / (float)subSteps));
+            pos += fixedPointMult(vel, floatingToFixed(Time.fixedDeltaTime / (float)subSteps));
             resolveTerrainCollisions();
         }
         if (grounded)
@@ -114,7 +114,7 @@ public class Player : MonoBehaviour
                 Mathf.Pow(groundFriction, Time.deltaTime)+" "+
                 fixedToFloating(floatingToFixed(Mathf.Pow(groundFriction, Time.deltaTime))) + " " +
                 fixedToFloating(fixedPointMult(vel.x, floatingToFixed(Mathf.Pow(groundFriction, Time.deltaTime)))));*/
-            vel.x = fixedPointMult(vel.x,floatingToFixed(Mathf.Pow(groundFriction, Time.deltaTime)));
+            vel.x = fixedPointMult(vel.x, floatingToFixed(Mathf.Pow(groundFriction, Time.deltaTime)));
 
             if (!((Input.GetKey(KeyCode.D) && !UsesArrowKeys) || (Input.GetKey(KeyCode.RightArrow) && UsesArrowKeys) ||
                 (Input.GetKey(KeyCode.A) && !UsesArrowKeys) || (Input.GetKey(KeyCode.LeftArrow) && UsesArrowKeys)))
@@ -129,7 +129,7 @@ public class Player : MonoBehaviour
         else
         {
             //air resistance
-            vel.x = fixedPointMult(vel.x,floatingToFixed(Mathf.Pow(airResistance, Time.deltaTime)));
+            vel.x = fixedPointMult(vel.x, floatingToFixed(Mathf.Pow(airResistance, Time.deltaTime)));
             // vel.y *= Mathf.Pow(0.05f, Time.deltaTime);
         }
 
@@ -172,11 +172,11 @@ public class Player : MonoBehaviour
             {
                 vel.y += floatingToFixed(-gravity * jumpHeight / 4.0f * Time.deltaTime * Mathf.Max(1.0f, WaterDepth()) * 1.2f);
                 float depth = WaterDepth();
-                Debug.Log(depth + " " + vel.y); 
+                Debug.Log(depth + " " + vel.y);
                 if (depth < 0.5f && vel.y > 0)
                 {
-                   // pos.y += floatingToFixed(0.5f);
-                    vel.y += floatingToFixed(-gravity*10.0f * Time.deltaTime);
+                    // pos.y += floatingToFixed(0.5f);
+                    vel.y += floatingToFixed(-gravity * 10.0f * Time.deltaTime);
                 }
             }
             if (((Input.GetKey(KeyCode.S) && !UsesArrowKeys) || (Input.GetKey(KeyCode.DownArrow) && UsesArrowKeys)))
@@ -194,7 +194,7 @@ public class Player : MonoBehaviour
         ////Debug.Log("2 " + getTile(new Vector2(pos.x + 1, pos.y)));
         //Debug.Log("3 " + getTile(new Vector2(pos.x , pos.y+1)));
         //Debug.Log("4 " + getTile(new Vector2(pos.x + 1, pos.y+1)));
-        //  grounded = false;
+        //grounded = false;
 
 
 
@@ -213,7 +213,7 @@ public class Player : MonoBehaviour
                 //Debug.Log("1 y");
                 pos.y = fixedFloor(pos.y) + 65536;
                 vel.y = Mathf.Max(0, vel.y);
-                grounded = true;
+                //grounded = true;
             }
         }
         //Debug.Log("2 " + getTile(new Vector2(pos.x + 1, pos.y)));
@@ -231,7 +231,7 @@ public class Player : MonoBehaviour
                 //Debug.Log("2 y");
                 pos.y = fixedFloor(pos.y) + 65536;
                 vel.y = Mathf.Max(0, vel.y);
-                grounded = true;
+                //  grounded = true;
             }
         }
         //Debug.Log("3 " + getTile(new Vector2(pos.x, pos.y+1)));
@@ -272,7 +272,19 @@ public class Player : MonoBehaviour
 
         if (levelManager.getTile(fixedToFloating(pos) + new Vector2(0, -1)) == 1)
         {
-               
+
+            if (AABB(fixedToInt(pos) + new Vector2(0, -1), fixedToInt(pos) + new Vector2(1,0), fixedToFloating(pos) + new Vector2(0.1f, -0.1f), fixedToFloating(pos) + new Vector2(0.9f, 0.1f)))
+            {
+                grounded = true;
+            }
+        }
+        if (levelManager.getTile(fixedToFloating(pos) + new Vector2(1, -1)) == 1)
+        {
+            if (AABB(fixedToInt(pos) + new Vector2(1, -1), fixedToInt(pos) + new Vector2(2,0), fixedToFloating(pos) + new Vector2(0.1f, -0.1f), fixedToFloating(pos) + new Vector2(0.9f, 0.1f)))
+            {
+                grounded = true;
+            }
+
         }
 
 
@@ -297,8 +309,8 @@ public class Player : MonoBehaviour
         {
             inWater = true;
             //damping
-            vel.x =fixedPointMult(vel.x,floatingToFixed(Mathf.Pow(0.1f, Time.deltaTime)));
-            vel.y= fixedPointMult(vel.y,floatingToFixed(Mathf.Pow(0.1f, Time.deltaTime)));
+            vel.x = fixedPointMult(vel.x, floatingToFixed(Mathf.Pow(0.1f, Time.deltaTime)));
+            vel.y = fixedPointMult(vel.y, floatingToFixed(Mathf.Pow(0.1f, Time.deltaTime)));
 
             vel.x = Mathf.Clamp(vel.x, floatingToFixed(-2.8f), floatingToFixed(2.8f));
             vel.y = Mathf.Clamp(vel.y, floatingToFixed(-8.0f), floatingToFixed(8.0f));
@@ -307,7 +319,7 @@ public class Player : MonoBehaviour
             float depth = WaterDepth();
 
 
-            vel.y -= floatingToFixed(gravity * Mathf.Max(depth,1.0f) * 1.5f * Time.fixedDeltaTime);
+            vel.y -= floatingToFixed(gravity * Mathf.Max(depth, 1.0f) * 1.5f * Time.fixedDeltaTime);
         }
         else { inWater = false; }
 
@@ -418,7 +430,7 @@ public class Player : MonoBehaviour
 
         if (!hasBeen)
         {
-            Instantiate(checkPointParticles, fixedToFloating(newCheckPointPos),Quaternion.identity);
+            Instantiate(checkPointParticles, fixedToFloating(newCheckPointPos), Quaternion.identity);
             checkPointPos = newCheckPointPos + floatingToFixed(new Vector2(0, 0.5f));
             checkPointHits.Add(checkPointPos);
             levelManager.getLevel(fixedToFloating(newCheckPointPos)).checkPointHits++;
@@ -530,15 +542,15 @@ public class Player : MonoBehaviour
 
     int fixedPointMult(int a, int b)
     {
-        int sign =(int)( Mathf.Sign(a) * Mathf.Sign(b));
+        int sign = (int)(Mathf.Sign(a) * Mathf.Sign(b));
         a = Mathf.Abs(a);
         b = Mathf.Abs(b);
-        uint byte1 = (((uint)a & 0b1111111111111111) * ((uint)b & 0b1111111111111111))>>16;
-        uint byte2 = ((uint)a >>16 & 0b1111111111111111) * ((uint)b & 0b1111111111111111);
-        uint byte3 = ((uint)a & 0b1111111111111111) * ((uint)b >>16 & 0b1111111111111111);
-        uint byte4 = (((uint)a>>16 & 0b1111111111111111) * (((uint)b >> 16) & 0b1111111111111111)) <<16;
+        uint byte1 = (((uint)a & 0b1111111111111111) * ((uint)b & 0b1111111111111111)) >> 16;
+        uint byte2 = ((uint)a >> 16 & 0b1111111111111111) * ((uint)b & 0b1111111111111111);
+        uint byte3 = ((uint)a & 0b1111111111111111) * ((uint)b >> 16 & 0b1111111111111111);
+        uint byte4 = (((uint)a >> 16 & 0b1111111111111111) * (((uint)b >> 16) & 0b1111111111111111)) << 16;
         //Debug.Log(byte4+" "+fixedToFloating(byte4)+" "+ fixedToFloating(byte3) + " "+ fixedToFloating(byte2) + " "+ fixedToFloating(byte1));
-        return sign*((int)(byte4)+ (int)(byte3)+ (int)(byte2)+ (int)(byte1));
+        return sign * ((int)(byte4) + (int)(byte3) + (int)(byte2) + (int)(byte1));
 
     }
     Vector2Int fixedPointMult(Vector2Int a, Vector2Int b)
@@ -561,8 +573,18 @@ public class Player : MonoBehaviour
 
     bool AABB(Vector2 aMin, Vector2 aMax, Vector2 bMin, Vector2 bMax)
     {
+        drawDebugRect(aMin, aMax);
+        drawDebugRect(bMin, bMax);
         return aMin.x <= bMax.x && aMax.x >= bMin.x &&
             aMin.y <= bMax.y && aMax.y >= bMin.y;
+    }
+
+    void drawDebugRect(Vector2 aMin, Vector2 aMax)
+    {
+        Debug.DrawLine(aMin, new Vector3(aMin.x, aMax.y));
+        Debug.DrawLine(aMin, new Vector3(aMax.x, aMin.y));
+        Debug.DrawLine(aMax, new Vector3(aMin.x, aMax.y));
+        Debug.DrawLine(aMax, new Vector3(aMax.x, aMin.y));
     }
 
 }
