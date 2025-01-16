@@ -5,7 +5,6 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 using static UnityEditor.PlayerSettings;
 //player movement
-//friction after movement
 //fix jump
 //water
 //particles
@@ -54,6 +53,8 @@ public class Player : MonoBehaviour
     public GameObject checkPointParticles;
     public GameObject ItemParticles;
 
+    public bool finished;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -83,57 +84,79 @@ public class Player : MonoBehaviour
 
         // Debug.Log(levelManager.getTile(transform.position));
 
-        vel.y += floatingToFixed(gravity * Time.fixedDeltaTime);
-        int subSteps = 4;
-        playerInputs(1);
-        grounded = false;
-
-        //Debug.Log(fixedPointMult(vel, floatingToFixed(Time.fixedDeltaTime / (float)subSteps)) + " " + (Time.fixedDeltaTime / (float)subSteps));
-        //Debug.Log(fixedToFloating(fixedPointMult(vel, floatingToFixed(Time.fixedDeltaTime / (float)subSteps))) +" "+fixedToFloating(vel) +" "+" "+(Time.fixedDeltaTime / (float)subSteps));
-        for (int i = 0; i < subSteps; i++)
+        if (fixedToFloating(pos).y >186)
         {
-            pos += fixedPointMult(vel, floatingToFixed(Time.fixedDeltaTime / (float)subSteps));
-            resolveTerrainCollisions();
-        }
-        if (grounded)
-        {
-            jumps = maxJumps;
-            canJump = true;
-        }
-        else
-        {
-            jumps = Mathf.Min(maxJumps - 1, jumps);
+            finished = true;
         }
 
 
-        transform.position = new Vector3(fixedToFloating(pos.x) + 0.5f, fixedToFloating(pos.y) + 0.5f, -5);
-        if (grounded)
+        if (!finished)
         {
-            //friction resistance
-            /*Debug.Log(fixedToFloating(vel.x)+" "+ Mathf.Pow(groundFriction, Time.deltaTime)+" "+ 
-                Mathf.Pow(groundFriction, Time.deltaTime)+" "+
-                fixedToFloating(floatingToFixed(Mathf.Pow(groundFriction, Time.deltaTime))) + " " +
-                fixedToFloating(fixedPointMult(vel.x, floatingToFixed(Mathf.Pow(groundFriction, Time.deltaTime)))));*/
-            vel.x = fixedPointMult(vel.x, floatingToFixed(Mathf.Pow(groundFriction, Time.deltaTime)));
 
-            if (!((Input.GetKey(KeyCode.D) && !UsesArrowKeys) || (Input.GetKey(KeyCode.RightArrow) && UsesArrowKeys) ||
-                (Input.GetKey(KeyCode.A) && !UsesArrowKeys) || (Input.GetKey(KeyCode.LeftArrow) && UsesArrowKeys)))
+
+            vel.y += floatingToFixed(gravity * Time.fixedDeltaTime);
+            int subSteps = 4;
+            playerInputs(1);
+            grounded = false;
+
+            //Debug.Log(fixedPointMult(vel, floatingToFixed(Time.fixedDeltaTime / (float)subSteps)) + " " + (Time.fixedDeltaTime / (float)subSteps));
+            //Debug.Log(fixedToFloating(fixedPointMult(vel, floatingToFixed(Time.fixedDeltaTime / (float)subSteps))) +" "+fixedToFloating(vel) +" "+" "+(Time.fixedDeltaTime / (float)subSteps));
+            for (int i = 0; i < subSteps; i++)
             {
-                vel.x = fixedPointMult(vel.x, floatingToFixed(Mathf.Pow(groundFriction, Time.deltaTime)));
-                vel.x = fixedPointMult(vel.x, floatingToFixed(Mathf.Pow(groundFriction, Time.deltaTime)));
+                pos += fixedPointMult(vel, floatingToFixed(Time.fixedDeltaTime / (float)subSteps));
+                resolveTerrainCollisions();
+            }
+            if (grounded)
+            {
+                jumps = maxJumps;
+                canJump = true;
+            }
+            else
+            {
+                jumps = Mathf.Min(maxJumps - 1, jumps);
             }
 
 
-            // vel.y *= Mathf.Pow(0.01f, Time.deltaTime);
-        }
-        else
-        {
-            //air resistance
-            vel.x = fixedPointMult(vel.x, floatingToFixed(Mathf.Pow(airResistance, Time.deltaTime)));
-            // vel.y *= Mathf.Pow(0.05f, Time.deltaTime);
-        }
+            transform.position = new Vector3(fixedToFloating(pos.x) + 0.5f, fixedToFloating(pos.y) + 0.5f, -5);
+            if (grounded)
+            {
+                //friction resistance
+                /*Debug.Log(fixedToFloating(vel.x)+" "+ Mathf.Pow(groundFriction, Time.deltaTime)+" "+ 
+                    Mathf.Pow(groundFriction, Time.deltaTime)+" "+
+                    fixedToFloating(floatingToFixed(Mathf.Pow(groundFriction, Time.deltaTime))) + " " +
+                    fixedToFloating(fixedPointMult(vel.x, floatingToFixed(Mathf.Pow(groundFriction, Time.deltaTime)))));*/
+                vel.x = fixedPointMult(vel.x, floatingToFixed(Mathf.Pow(groundFriction, Time.deltaTime)));
 
-        tileCheck();
+                if (!((Input.GetKey(KeyCode.D) && !UsesArrowKeys) || (Input.GetKey(KeyCode.RightArrow) && UsesArrowKeys) ||
+                    (Input.GetKey(KeyCode.A) && !UsesArrowKeys) || (Input.GetKey(KeyCode.LeftArrow) && UsesArrowKeys)))
+                {
+                    vel.x = fixedPointMult(vel.x, floatingToFixed(Mathf.Pow(groundFriction, Time.deltaTime)));
+                    vel.x = fixedPointMult(vel.x, floatingToFixed(Mathf.Pow(groundFriction, Time.deltaTime)));
+                }
+
+
+                // vel.y *= Mathf.Pow(0.01f, Time.deltaTime);
+            }
+            else
+            {
+                //air resistance
+                vel.x = fixedPointMult(vel.x, floatingToFixed(Mathf.Pow(airResistance, Time.deltaTime)));
+                // vel.y *= Mathf.Pow(0.05f, Time.deltaTime);
+            }
+
+            tileCheck();
+        }
+        else 
+        {
+            vel.y += floatingToFixed(gravity * Time.fixedDeltaTime);
+            vel.y = Mathf.Max(floatingToFixed(2), vel.y);
+            pos.y += fixedPointMult(vel.y, floatingToFixed(Time.fixedDeltaTime));
+            transform.position = new Vector3(fixedToFloating(pos.x) + 0.5f, fixedToFloating(pos.y) + 0.5f, -5);
+            if (pos.y > floatingToFixed(196))
+            {
+                Debug.Log("winner!");
+            }
+        }
 
     }
 
