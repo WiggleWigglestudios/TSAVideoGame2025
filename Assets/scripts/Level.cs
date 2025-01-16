@@ -26,17 +26,24 @@ public class Level : MonoBehaviour
     public int checkPointHits = 0;
 
     public Level lastLevel;
+    // Audio
+    public AudioSource audioSource;
+    public AudioSource quietAudioSource;
+    public AudioClip collapseNoise;
+    public AudioClip soonCollapseNoise;
 
     public void Start()
     {
+        audioSource = GetComponent<AudioSource>();
         recreateMesh();
     }
 
     private void Update()
     {
-        if (checkPointHits>=2&&lastLevel!=null)
+        if (checkPointHits==2&&lastLevel!=null) // modified to ==n from >=
         {
             lastLevel.collapse();
+            checkPointHits++; // Modifed for audio to play once
         }
     }
 
@@ -228,6 +235,7 @@ public class Level : MonoBehaviour
 
     public void collapse() 
     {
+
         if (collapsed != true)
         {
             for (int x = 0; x < 32; x++)
@@ -245,6 +253,11 @@ public class Level : MonoBehaviour
         }
         
         collapsed = true;
+         // Audio
+        quietAudioSource.PlayOneShot(soonCollapseNoise);
+        Invoke("collaspeSound", 3f);
+        
     }
+    void collaspeSound(){audioSource.PlayOneShot(collapseNoise);}
 
 }
