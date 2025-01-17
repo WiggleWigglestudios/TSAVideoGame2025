@@ -93,6 +93,10 @@ public class Player : MonoBehaviour
         {
             finished = true;
         }
+        if (fixedToFloating(pos).y < 0)
+        {
+            Died();
+        }
 
 
         if (!finished)
