@@ -28,9 +28,7 @@ public class Level : MonoBehaviour
     public Level lastLevel;
     // Audio
     public AudioSource audioSource;
-    public AudioSource quietAudioSource;
     public AudioClip collapseNoise;
-    public AudioClip soonCollapseNoise;
 
     public void Start()
     {
@@ -43,8 +41,15 @@ public class Level : MonoBehaviour
         if (checkPointHits==2&&lastLevel!=null)
         {
             lastLevel.collapse();
+            // Wait three seconds
+            StartCoroutine(PlayCollapseSoundWithDelay()); // Start the coroutine
             checkPointHits++; // Modifed for audio to play once
         }
+    }
+    private System.Collections.IEnumerator PlayCollapseSoundWithDelay()
+    {
+        yield return new WaitForSeconds(3f); // Wait for 3 seconds
+        audioSource.PlayOneShot(collapseNoise); // Play the collapse noise
     }
 
 
@@ -256,9 +261,6 @@ public class Level : MonoBehaviour
         }
         
         collapsed = true;
-        // Audio
-        quietAudioSource.PlayOneShot(soonCollapseNoise);
-        Invoke("collaspeSound", 3f);
     }
 
 }
