@@ -760,6 +760,10 @@ MonoBehaviour:
   collapsed: 0
   checkPointHits: 0
   lastLevel: {fileID: 0}
+  audioSource: {fileID: 0}
+  quietAudioSource: {fileID: 0}
+  collapseNoise: {fileID: 0}
+  soonCollapseNoise: {fileID: 0}
 --- !u!33 &270279812
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -872,6 +876,10 @@ MonoBehaviour:
   collapsed: 0
   checkPointHits: 0
   lastLevel: {fileID: 491734345}
+  audioSource: {fileID: 0}
+  quietAudioSource: {fileID: 0}
+  collapseNoise: {fileID: 0}
+  soonCollapseNoise: {fileID: 0}
 --- !u!33 &385695040
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -974,7 +982,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -166, y: 143}
+  m_AnchoredPosition: {x: -179, y: 168}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &395284666
@@ -997,7 +1005,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Immineit Collapse
+  m_text: Waddles and Wiggles Wild dash to the way out
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: dd44d76c4a0e44ef2a50f01390903922, type: 2}
   m_sharedMaterial: {fileID: -1990026832670646052, guid: dd44d76c4a0e44ef2a50f01390903922, type: 2}
@@ -1024,14 +1032,14 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 50
-  m_fontSizeBase: 50
+  m_fontSize: 40
+  m_fontSizeBase: 40
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 1
+  m_HorizontalAlignment: 2
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -1062,7 +1070,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 9.577637, z: -358.88293, w: -4.814087}
+  m_margin: {x: 11.31311, y: -16.819641, z: -338.14233, w: -4.814087}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -1120,6 +1128,10 @@ MonoBehaviour:
   collapsed: 0
   checkPointHits: 0
   lastLevel: {fileID: 1266210000}
+  audioSource: {fileID: 0}
+  quietAudioSource: {fileID: 0}
+  collapseNoise: {fileID: 0}
+  soonCollapseNoise: {fileID: 0}
 --- !u!33 &463602556
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -1319,6 +1331,10 @@ MonoBehaviour:
   collapsed: 0
   checkPointHits: 0
   lastLevel: {fileID: 270279811}
+  audioSource: {fileID: 0}
+  quietAudioSource: {fileID: 0}
+  collapseNoise: {fileID: 0}
+  soonCollapseNoise: {fileID: 0}
 --- !u!33 &491734346
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -1560,7 +1576,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -11.021, y: -114}
+  m_AnchoredPosition: {x: -9.6157875, y: -144.0603}
   m_SizeDelta: {x: 182.0418, y: 58.7232}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &697847993
@@ -2076,6 +2092,10 @@ MonoBehaviour:
   collapsed: 0
   checkPointHits: 0
   lastLevel: {fileID: 463602555}
+  audioSource: {fileID: 0}
+  quietAudioSource: {fileID: 0}
+  collapseNoise: {fileID: 0}
+  soonCollapseNoise: {fileID: 0}
 --- !u!33 &828213522
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -2559,7 +2579,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -11.405, y: -31.5523}
+  m_AnchoredPosition: {x: -9.999787, y: -61.612602}
   m_SizeDelta: {x: 182.81, y: 61.1046}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1111679370
@@ -3113,6 +3133,10 @@ MonoBehaviour:
   collapsed: 0
   checkPointHits: 0
   lastLevel: {fileID: 385695039}
+  audioSource: {fileID: 0}
+  quietAudioSource: {fileID: 0}
+  collapseNoise: {fileID: 0}
+  soonCollapseNoise: {fileID: 0}
 --- !u!33 &1261774915
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -3225,6 +3249,10 @@ MonoBehaviour:
   collapsed: 0
   checkPointHits: 0
   lastLevel: {fileID: 1261774914}
+  audioSource: {fileID: 0}
+  quietAudioSource: {fileID: 0}
+  collapseNoise: {fileID: 0}
+  soonCollapseNoise: {fileID: 0}
 --- !u!33 &1266210001
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -3664,6 +3692,7 @@ GameObject:
   - component: {fileID: 1399307934}
   - component: {fileID: 1399307936}
   - component: {fileID: 1399307937}
+  - component: {fileID: 1399307938}
   m_Layer: 0
   m_Name: TitleScreenManager
   m_TagString: Untagged
@@ -3729,6 +3758,18 @@ MonoBehaviour:
   - {fileID: 1997932828}
   - {fileID: 1111679368}
   - {fileID: 697847991}
+--- !u!114 &1399307938
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1399307933}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5e72c58e55224188a542b36a2eee3b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1439523195
 GameObject:
   m_ObjectHideFlags: 0
@@ -5089,7 +5130,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -11.4052, y: 49.0603}
+  m_AnchoredPosition: {x: -10, y: 19}
   m_SizeDelta: {x: 182.8105, y: 57.8795}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1997932830
@@ -5136,9 +5177,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1399307934}
-        m_TargetAssemblyTypeName: TitleScreenManager, Assembly-CSharp
-        m_MethodName: StartGame
+      - m_Target: {fileID: 1399307938}
+        m_TargetAssemblyTypeName: toCutScene, Assembly-CSharp
+        m_MethodName: ToCutScene
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
