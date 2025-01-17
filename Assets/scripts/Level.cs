@@ -40,7 +40,7 @@ public class Level : MonoBehaviour
 
     private void Update()
     {
-        if (checkPointHits==2&&lastLevel!=null) // modified to ==n from >=
+        if (checkPointHits==2&&lastLevel!=null)
         {
             lastLevel.collapse();
             checkPointHits++; // Modifed for audio to play once
@@ -235,7 +235,6 @@ public class Level : MonoBehaviour
 
     public void collapse() 
     {
-
         if (collapsed != true)
         {
             for (int x = 0; x < 32; x++)
@@ -248,16 +247,18 @@ public class Level : MonoBehaviour
                 }
             }
 
-            Camera.main.GetComponent<CameraFollow>().shakeTimer = 4.0f;
+            Camera[] allCameras = Camera.allCameras;
+            for (int i = 0; i < allCameras.Length; i++)
+            {
+                allCameras[i].GetComponent<CameraFollow>().shakeTimer = 4.0f;
+            }
             meshRenderer.enabled = false;
         }
         
         collapsed = true;
-         // Audio
+        // Audio
         quietAudioSource.PlayOneShot(soonCollapseNoise);
         Invoke("collaspeSound", 3f);
-        
     }
-    void collaspeSound(){audioSource.PlayOneShot(collapseNoise);}
 
 }
