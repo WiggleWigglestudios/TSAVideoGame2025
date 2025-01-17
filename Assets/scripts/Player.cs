@@ -118,7 +118,11 @@ public class Player : MonoBehaviour
             }
             else
             {
+                if(!(jumpCountDown > 0.0f && jumped))
+                {
                 jumps = Mathf.Min(maxJumps - 1, jumps);
+                }
+
             }
 
 
@@ -179,13 +183,14 @@ public class Player : MonoBehaviour
             facing = false;
         }
 
-        if (!((Input.GetKey(KeyCode.W) && !UsesArrowKeys) || (Input.GetKey(KeyCode.UpArrow) && UsesArrowKeys))||jumpCountDown<0.0f)
+        if (!((Input.GetKey(KeyCode.W) && !UsesArrowKeys) || (Input.GetKey(KeyCode.UpArrow) && UsesArrowKeys)))
         {
             canJump = true;
             jumpCountDown = 0.1f;
             jumped = false;
         }
 
+        Debug.Log(jumps);
         if (((Input.GetKey(KeyCode.W) && !UsesArrowKeys) || (Input.GetKey(KeyCode.UpArrow) && UsesArrowKeys)) && canJump && (jumps > 0||(jumpCountDown>0.0f&&jumped)) && !inWater)
         {
             jumpCountDown -= Time.deltaTime;
@@ -430,10 +435,10 @@ public class Player : MonoBehaviour
 
             if (itemForUs)
             {
-                Instantiate(ItemParticlesThisPlayer,fixedToFloating(inPos), Quaternion.identity);
+                Instantiate(ItemParticlesThisPlayer, (Vector3)(Vector2)inPos + new Vector3(0.2f, 0, 0), Quaternion.identity);
             }
             else {
-                Instantiate(ItemParticlesOtherPlayer, fixedToFloating(inPos), Quaternion.identity);
+                Instantiate(ItemParticlesOtherPlayer,(Vector3)(Vector2)inPos+new Vector3(0.2f,0,0), Quaternion.identity);
             }
 
         }
