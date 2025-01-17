@@ -25,12 +25,15 @@ public class Player : MonoBehaviour
     public float jumps;
     bool canJump;
     bool grounded;
+    public float jumpCountDown;
+    public bool jumped;
     bool inWater;
 
     public LevelManager levelManager;
 
     public SpriteRenderer spriteRenderer;
     public Sprite[] playerSprites;
+
 
     const float gravity = -30;
 
@@ -51,9 +54,11 @@ public class Player : MonoBehaviour
     public ItemUIManager itemUIManager;
 
     public GameObject checkPointParticles;
-    public GameObject ItemParticles;
+    public GameObject ItemParticlesThisPlayer;
+    public GameObject ItemParticlesOtherPlayer;
 
     public bool finished;
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -174,17 +179,29 @@ public class Player : MonoBehaviour
             facing = false;
         }
 
-        if (!((Input.GetKey(KeyCode.W) && !UsesArrowKeys) || (Input.GetKey(KeyCode.UpArrow) && UsesArrowKeys)))
+        if (!((Input.GetKey(KeyCode.W) && !UsesArrowKeys) || (Input.GetKey(KeyCode.UpArrow) && UsesArrowKeys))||jumpCountDown<0.0f)
         {
             canJump = true;
+            jumpCountDown = 0.1f;
+            jumped = false;
         }
-        if (((Input.GetKey(KeyCode.W) && !UsesArrowKeys) || (Input.GetKey(KeyCode.UpArrow) && UsesArrowKeys)) && canJump && jumps > 0 && !inWater)
+
+        if (((Input.GetKey(KeyCode.W) && !UsesArrowKeys) || (Input.GetKey(KeyCode.UpArrow) && UsesArrowKeys)) && canJump && (jumps > 0||(jumpCountDown>0.0f&&jumped)) && !inWater)
         {
-            jumps--;
-            canJump = false;
-            //1/2mv^2=mgh    1/2v^2=gh   sqrt(2gh)=v
-            vel.y = floatingToFixed(Mathf.Sqrt(Mathf.Abs(2 * gravity * jumpHeight)));
-            grounded = false;
+            jumpCountDown -= Time.deltaTime;
+            if (jumpCountDown > 0.0f)
+            {
+                jumped = true;
+                vel.y =Mathf.Max(0,vel.y+floatingToFixed(Mathf.Sqrt(Mathf.Abs(2 * gravity * jumpHeight))*(1/0.1f)*Time.deltaTime));
+            }
+            else 
+            {
+                jumps--;
+                canJump = false;
+                //1/2mv^2=mgh    1/2v^2=gh   sqrt(2gh)=v
+                vel.y = floatingToFixed(Mathf.Sqrt(Mathf.Abs(2 * gravity * jumpHeight)));
+                grounded = false;
+            }
         }
 
 
@@ -204,7 +221,7 @@ public class Player : MonoBehaviour
             }
             if (((Input.GetKey(KeyCode.S) && !UsesArrowKeys) || (Input.GetKey(KeyCode.DownArrow) && UsesArrowKeys)))
             {
-                vel.y -= floatingToFixed(-gravity * jumpHeight / 4.0f * Time.deltaTime * WaterDepth() * 1.2f);
+                vel.y -= floatingToFixed(-gravity * jumpHeight / 4.0f * Time.deltaTime * WaterDepth() * 1.8f);
             }
         }
 
@@ -342,7 +359,7 @@ public class Player : MonoBehaviour
             float depth = WaterDepth();
 
 
-            vel.y -= floatingToFixed(gravity * Mathf.Max(depth, 1.0f) * 1.5f * Time.fixedDeltaTime);
+            vel.y -= floatingToFixed(gravity * Mathf.Max(depth, 1.0f) * 1.3f * Time.fixedDeltaTime);
         }
         else { inWater = false; }
 
@@ -368,13 +385,14 @@ public class Player : MonoBehaviour
         if (!hasBeen)
         {
             itemtHits.Add(inPos);
-
+            bool itemForUs = false;
             float rand = Random.Range(0.0f, 1.0f);
             if (rand < 0.2f)
             {
                 items.Add(new Item(0, 0, 15, 2, normalJumpHeight, normalSpeed));
                 itemUIManager.addItem(items.Count - 1);
                 Debug.Log("double jump");
+                itemForUs = true;
             }
             else if (rand < 0.4f)
             {
@@ -382,12 +400,14 @@ public class Player : MonoBehaviour
                 items.Add(new Item(0, 1, 15, 1, normalJumpHeight, normalSpeed * 1.5f));
                 itemUIManager.addItem(items.Count - 1);
                 Debug.Log("faster");
+                itemForUs = true;
             }
             else if (rand < 0.6f)
             {
                 items.Add(new Item(0, 2, 15, 1, normalJumpHeight * 1.5f, normalSpeed));
                 itemUIManager.addItem(items.Count - 1);
                 Debug.Log("higher jump");
+                itemForUs = true;
             }
             else if (rand < 0.70f)
             {
@@ -408,8 +428,17 @@ public class Player : MonoBehaviour
                 Debug.Log("other player cant jump as high");
             }
 
+            if (itemForUs)
+            {
+                Instantiate(ItemParticlesThisPlayer,fixedToFloating(inPos), Quaternion.identity);
+            }
+            else {
+                Instantiate(ItemParticlesOtherPlayer, fixedToFloating(inPos), Quaternion.identity);
+            }
 
         }
+    
+    
     }
 
     void itemUpdate()
