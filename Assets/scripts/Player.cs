@@ -371,7 +371,7 @@ public class Player : MonoBehaviour
         //item check
         if (levelManager.getTile(fixedToFloating(pos) + new Vector2(0.5f, 0.5f)) == 5)
         {
-            getItem(fixedToInt(pos));
+            getItem(Vector2Int.FloorToInt(fixedToFloating(pos) + new Vector2(0.5f, 0.5f)));
         }
     }
 
@@ -435,10 +435,10 @@ public class Player : MonoBehaviour
 
             if (itemForUs)
             {
-                Instantiate(ItemParticlesThisPlayer, (Vector3)(Vector2)inPos + new Vector3(0.2f, 0, 0), Quaternion.identity);
+                Instantiate(ItemParticlesThisPlayer, (Vector3)(Vector2)inPos + new Vector3(0.5f, 0, 0), Quaternion.identity);
             }
             else {
-                Instantiate(ItemParticlesOtherPlayer,(Vector3)(Vector2)inPos+new Vector3(0.2f,0,0), Quaternion.identity);
+                Instantiate(ItemParticlesOtherPlayer,(Vector3)(Vector2)inPos+new Vector3(0.5f,0,0), Quaternion.identity);
             }
 
         }
