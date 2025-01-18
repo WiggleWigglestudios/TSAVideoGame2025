@@ -26,6 +26,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Brecklevel.unity
     guid: 5c2ac6d7c9ed94e08879cf703f0c4813
+  - enabled: 1
+    path: Assets/Scenes/Tutorial.unity
+    guid: 18d5d8fdc587f4f58ae34095b7da6d13
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0

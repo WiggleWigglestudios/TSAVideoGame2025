@@ -7,4 +7,8 @@ public class TitleScreenManager : MonoBehaviour
     {
         SceneManager.LoadScene("Brecklevel"); 
     }
+    public void toTutorial()
+    {
+        SceneManager.LoadScene("Tutorial"); 
+    }
 }
