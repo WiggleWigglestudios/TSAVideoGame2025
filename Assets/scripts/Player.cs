@@ -4,6 +4,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using static UnityEditor.PlayerSettings;
+using UnityEngine.SceneManagement;
 //player movement
 //fix jump
 //water
@@ -55,6 +56,8 @@ public class Player : MonoBehaviour
     public GameObject checkPointParticles;
     public GameObject ItemParticlesThisPlayer;
     public GameObject ItemParticlesOtherPlayer;
+
+    public bool player1;
 
     // Audio
     public AudioSource audioSource;
@@ -178,7 +181,14 @@ public class Player : MonoBehaviour
             transform.position = new Vector3(fixedToFloating(pos.x) + 0.5f, fixedToFloating(pos.y) + 0.5f, -5);
             if (pos.y > floatingToFixed(196))
             {
-                Debug.Log("winner!");
+                if(player1)
+                {
+                    SceneManager.LoadScene("Player1Victory"); 
+                }
+                else
+                {
+                    SceneManager.LoadScene("Player2Victory"); 
+                }
             }
         }
 
