@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEditor;
 
-//[CustomEditor(typeof(Level))]
+[CustomEditor(typeof(Level))]
 public class LevelEditor : Editor
 {
     public override void OnInspectorGUI()

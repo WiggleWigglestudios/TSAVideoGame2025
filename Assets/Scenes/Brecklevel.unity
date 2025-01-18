@@ -416,8 +416,8 @@ MonoBehaviour:
   boundsOfLevel:
   - {x: 256, y: 160}
   - {x: 288, y: 192}
-  levelDataFilePath: Assets/LevelData/TestLevel14.txt
-  translationDataFilePath: Assets/LevelData/TestLevel11TranslationTable.txt
+  levelDataFilePath: TestLevel14
+  translationDataFilePath: TestLevel11TranslationTable
   collapseTilePrefab: {fileID: 7641180659968661374, guid: d6f568be3a1aa3e4eb296f9ec8d803a9, type: 3}
   collapsed: 0
   checkPointHits: 0
@@ -1151,8 +1151,8 @@ MonoBehaviour:
   boundsOfLevel:
   - {x: 32, y: 64}
   - {x: 64, y: 96}
-  levelDataFilePath: Assets/LevelData/TestLevel4.txt
-  translationDataFilePath: Assets/LevelData/TestLevelTranslationTable.txt
+  levelDataFilePath: TestLevel4
+  translationDataFilePath: TestLevelTranslationTable
   collapseTilePrefab: {fileID: 7641180659968661374, guid: d6f568be3a1aa3e4eb296f9ec8d803a9, type: 3}
   collapsed: 0
   checkPointHits: 0
@@ -6607,8 +6607,8 @@ MonoBehaviour:
   boundsOfLevel:
   - {x: 192, y: 96}
   - {x: 224, y: 128}
-  levelDataFilePath: Assets/LevelData/TestLevel10.txt
-  translationDataFilePath: Assets/LevelData/TestLevel6TranslationTable.txt
+  levelDataFilePath: TestLevel10
+  translationDataFilePath: TestLevel6TranslationTable
   collapseTilePrefab: {fileID: 7641180659968661374, guid: d6f568be3a1aa3e4eb296f9ec8d803a9, type: 3}
   collapsed: 0
   checkPointHits: 0
@@ -6819,8 +6819,8 @@ MonoBehaviour:
   boundsOfLevel:
   - {x: 128, y: 96}
   - {x: 160, y: 128}
-  levelDataFilePath: Assets/LevelData/TestLevel8.txt
-  translationDataFilePath: Assets/LevelData/TestLevel6TranslationTable.txt
+  levelDataFilePath: TestLevel8
+  translationDataFilePath: TestLevel6TranslationTable
   collapseTilePrefab: {fileID: 7641180659968661374, guid: d6f568be3a1aa3e4eb296f9ec8d803a9, type: 3}
   collapsed: 0
   checkPointHits: 0
@@ -6963,8 +6963,8 @@ MonoBehaviour:
   boundsOfLevel:
   - {x: 0, y: 0}
   - {x: 32, y: 32}
-  levelDataFilePath: Assets/LevelData/TestLevel.txt
-  translationDataFilePath: Assets/LevelData/TestLevelTranslationTable.txt
+  levelDataFilePath: TestLevel
+  translationDataFilePath: TestLevelTranslationTable
   collapseTilePrefab: {fileID: 7641180659968661374, guid: d6f568be3a1aa3e4eb296f9ec8d803a9, type: 3}
   collapsed: 0
   checkPointHits: 0
@@ -7393,8 +7393,8 @@ MonoBehaviour:
   boundsOfLevel:
   - {x: 0, y: 32}
   - {x: 32, y: 64}
-  levelDataFilePath: Assets/LevelData/TestLevel2.txt
-  translationDataFilePath: Assets/LevelData/TestLevelTranslationTable.txt
+  levelDataFilePath: TestLevel2
+  translationDataFilePath: TestLevelTranslationTable
   collapseTilePrefab: {fileID: 7641180659968661374, guid: d6f568be3a1aa3e4eb296f9ec8d803a9, type: 3}
   collapsed: 0
   checkPointHits: 0
@@ -18617,8 +18617,8 @@ MonoBehaviour:
   boundsOfLevel:
   - {x: 96, y: 96}
   - {x: 128, y: 128}
-  levelDataFilePath: Assets/LevelData/TestLevel7.txt
-  translationDataFilePath: Assets/LevelData/TestLevel6TranslationTable.txt
+  levelDataFilePath: TestLevel7
+  translationDataFilePath: TestLevel6TranslationTable
   collapseTilePrefab: {fileID: 7641180659968661374, guid: d6f568be3a1aa3e4eb296f9ec8d803a9, type: 3}
   collapsed: 0
   checkPointHits: 0
@@ -24622,8 +24622,8 @@ MonoBehaviour:
   boundsOfLevel:
   - {x: 256, y: 96}
   - {x: 288, y: 128}
-  levelDataFilePath: Assets/LevelData/TestLevel12.txt
-  translationDataFilePath: Assets/LevelData/TestLevel11TranslationTable.txt
+  levelDataFilePath: TestLevel12
+  translationDataFilePath: TestLevel11TranslationTable
   collapseTilePrefab: {fileID: 7641180659968661374, guid: d6f568be3a1aa3e4eb296f9ec8d803a9, type: 3}
   collapsed: 0
   checkPointHits: 0
@@ -30307,8 +30307,8 @@ MonoBehaviour:
   boundsOfLevel:
   - {x: 256, y: 128}
   - {x: 288, y: 160}
-  levelDataFilePath: Assets/LevelData/TestLevel13.txt
-  translationDataFilePath: Assets/LevelData/TestLevel11TranslationTable.txt
+  levelDataFilePath: TestLevel13
+  translationDataFilePath: TestLevel11TranslationTable
   collapseTilePrefab: {fileID: 7641180659968661374, guid: d6f568be3a1aa3e4eb296f9ec8d803a9, type: 3}
   collapsed: 0
   checkPointHits: 0
@@ -30519,8 +30519,8 @@ MonoBehaviour:
   boundsOfLevel:
   - {x: 32, y: 32}
   - {x: 64, y: 64}
-  levelDataFilePath: Assets/LevelData/TestLevel3.txt
-  translationDataFilePath: Assets/LevelData/TestLevelTranslationTable.txt
+  levelDataFilePath: TestLevel3
+  translationDataFilePath: TestLevelTranslationTable
   collapseTilePrefab: {fileID: 7641180659968661374, guid: d6f568be3a1aa3e4eb296f9ec8d803a9, type: 3}
   collapsed: 0
   checkPointHits: 0
@@ -37338,8 +37338,8 @@ MonoBehaviour:
   boundsOfLevel:
   - {x: 64, y: 64}
   - {x: 96, y: 96}
-  levelDataFilePath: Assets/LevelData/TestLevel5.txt
-  translationDataFilePath: Assets/LevelData/TestLevel5TranslationTable.txt
+  levelDataFilePath: TestLevel5
+  translationDataFilePath: TestLevel5TranslationTable
   collapseTilePrefab: {fileID: 7641180659968661374, guid: d6f568be3a1aa3e4eb296f9ec8d803a9, type: 3}
   collapsed: 0
   checkPointHits: 0
@@ -38978,8 +38978,8 @@ MonoBehaviour:
   boundsOfLevel:
   - {x: 96, y: 64}
   - {x: 128, y: 96}
-  levelDataFilePath: Assets/LevelData/TestLevel6.txt
-  translationDataFilePath: Assets/LevelData/TestLevel6TranslationTable.txt
+  levelDataFilePath: TestLevel6
+  translationDataFilePath: TestLevel6TranslationTable
   collapseTilePrefab: {fileID: 7641180659968661374, guid: d6f568be3a1aa3e4eb296f9ec8d803a9, type: 3}
   collapsed: 0
   checkPointHits: 0
@@ -39508,8 +39508,8 @@ MonoBehaviour:
   boundsOfLevel:
   - {x: 160, y: 96}
   - {x: 192, y: 128}
-  levelDataFilePath: Assets/LevelData/TestLevel9.txt
-  translationDataFilePath: Assets/LevelData/TestLevel6TranslationTable.txt
+  levelDataFilePath: TestLevel9
+  translationDataFilePath: TestLevel6TranslationTable
   collapseTilePrefab: {fileID: 7641180659968661374, guid: d6f568be3a1aa3e4eb296f9ec8d803a9, type: 3}
   collapsed: 0
   checkPointHits: 0
@@ -45908,8 +45908,8 @@ MonoBehaviour:
   boundsOfLevel:
   - {x: 224, y: 96}
   - {x: 256, y: 128}
-  levelDataFilePath: Assets/LevelData/TestLevel11.txt
-  translationDataFilePath: Assets/LevelData/TestLevel11TranslationTable.txt
+  levelDataFilePath: TestLevel11
+  translationDataFilePath: TestLevel11TranslationTable
   collapseTilePrefab: {fileID: 7641180659968661374, guid: d6f568be3a1aa3e4eb296f9ec8d803a9, type: 3}
   collapsed: 0
   checkPointHits: 0

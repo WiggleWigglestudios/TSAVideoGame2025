@@ -6115,8 +6115,8 @@ MonoBehaviour:
   boundsOfLevel:
   - {x: 0, y: 0}
   - {x: 32, y: 32}
-  levelDataFilePath: Assets/LevelData/tutorial1.txt
-  translationDataFilePath: Assets/LevelData/TestLevelTranslationTable.txt
+  levelDataFilePath: tutorial1
+  translationDataFilePath: TestLevelTranslationTable
   collapseTilePrefab: {fileID: 7641180659968661374, guid: d6f568be3a1aa3e4eb296f9ec8d803a9, type: 3}
   collapsed: 0
   checkPointHits: 0
@@ -6380,8 +6380,8 @@ MonoBehaviour:
   boundsOfLevel:
   - {x: 32, y: 0}
   - {x: 64, y: 32}
-  levelDataFilePath: Assets/LevelData/tutorial2.txt
-  translationDataFilePath: Assets/LevelData/TestLevel5TranslationTable.txt
+  levelDataFilePath: tutorial2
+  translationDataFilePath: TestLevel5TranslationTable
   collapseTilePrefab: {fileID: 7641180659968661374, guid: d6f568be3a1aa3e4eb296f9ec8d803a9, type: 3}
   collapsed: 0
   checkPointHits: 0
@@ -28831,8 +28831,8 @@ MonoBehaviour:
   boundsOfLevel:
   - {x: 64, y: 0}
   - {x: 96, y: 32}
-  levelDataFilePath: Assets/LevelData/tutorial3.txt
-  translationDataFilePath: Assets/LevelData/TestLevel11TranslationTable.txt
+  levelDataFilePath: tutorial3
+  translationDataFilePath: TestLevel11TranslationTable
   collapseTilePrefab: {fileID: 7641180659968661374, guid: d6f568be3a1aa3e4eb296f9ec8d803a9, type: 3}
   collapsed: 0
   checkPointHits: 0

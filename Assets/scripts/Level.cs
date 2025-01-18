@@ -57,10 +57,12 @@ public class Level : MonoBehaviour
     {
         levelData = new int[32, 32];
         
-        if (File.Exists(levelDataFilePath))
-        {
-
-            byte[] data = File.ReadAllBytes(levelDataFilePath);
+       // if (File.Exists(levelDataFilePath))
+        //{
+            TextAsset levelDataTextAsset = Resources.Load<TextAsset>(levelDataFilePath);
+        if(levelDataTextAsset!=null)
+        { 
+            byte[] data = levelDataTextAsset.bytes;//Resources.Load<File>(levelDataFilePath);// File.ReadAllBytes(levelDataFilePath);
             int indexX = 0;
             int indexY = 0;
             string currentStringNumber = "";
@@ -108,10 +110,10 @@ public class Level : MonoBehaviour
             }
         }
 
-
-        if (File.Exists(translationDataFilePath))
+        TextAsset translationDataTextAsset = Resources.Load<TextAsset>(translationDataFilePath);
+        if (translationDataTextAsset!=null)
         {
-            byte[] data = File.ReadAllBytes(translationDataFilePath);
+            byte[] data = translationDataTextAsset.bytes;// File.ReadAllBytes(translationDataFilePath);
             string currentStringNumber = "";
             List<int> newTranslationData = new List<int>();
             for (int i = 0; i < data.Length; i++)
