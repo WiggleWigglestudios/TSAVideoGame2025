@@ -20,7 +20,7 @@ public class LevelManager : MonoBehaviour
      
      */
     public int getTile(Vector2 pos)
-    { 
+    {
         int levelIndex = -1;
         for (int i = 0; i < levels.Length; i++)
         {
@@ -30,14 +30,29 @@ public class LevelManager : MonoBehaviour
                 levelIndex = i;
             }
         }
-        if(levelIndex == -1) { return 0; }
+        if (levelIndex == -1) { return 0; }
 
         //if the level collapses you die in it
         if (levels[levelIndex].collapsed) { return 3; }
 
-       return levels[levelIndex].translationTable[
-           levels[levelIndex].levelData[(int)(pos.x - levels[levelIndex].boundsOfLevel[0].x), 
-           (int)(pos.y - levels[levelIndex].boundsOfLevel[0].y)]];
+
+        if ((int)(pos.x - levels[levelIndex].boundsOfLevel[0].x) < levels[levelIndex].levelData.GetLength(0) &&
+             (int)(pos.y - levels[levelIndex].boundsOfLevel[0].y) < levels[levelIndex].levelData.GetLength(1))
+        {
+            if (levels[levelIndex].levelData[(int)(pos.x - levels[levelIndex].boundsOfLevel[0].x),
+               (int)(pos.y - levels[levelIndex].boundsOfLevel[0].y)] > levels[levelIndex].translationTable.Length)
+            {
+                return 0;
+            }
+
+
+            return levels[levelIndex].translationTable[
+               levels[levelIndex].levelData[(int)(pos.x - levels[levelIndex].boundsOfLevel[0].x),
+               (int)(pos.y - levels[levelIndex].boundsOfLevel[0].y)]];
+
+        }
+
+        return 0;
 
     }
    
