@@ -24,7 +24,7 @@ public class PlayerFootsteps : MonoBehaviour
     {
         if (playerScript != null)
         {
-            if (playerScript.grounded && !playerScript.inWater && Mathf.Abs(playerScript.vel.x) > 0.1f)
+            if (playerScript.grounded && !playerScript.inWater && Mathf.Abs(playerScript.fixedToFloating(playerScript.vel.x)) > 0.5f)
             {
                 stepTimer -= Time.deltaTime;
 
