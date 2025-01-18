@@ -205,7 +205,7 @@ public class Player : MonoBehaviour
             jumped = false;
         }
 
-        Debug.Log(jumps);
+        //Debug.Log(jumps);
         if (((Input.GetKey(KeyCode.W) && !UsesArrowKeys) || (Input.GetKey(KeyCode.UpArrow) && UsesArrowKeys)) && canJump && (jumps > 0||(jumpCountDown>0.0f&&jumped)) && !inWater)
         {
             jumpCountDown -= Time.deltaTime;
