@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
-
+using UnityEngine.SceneManagement;
 public class DialogueManager : MonoBehaviour
 {
     public TextMeshProUGUI player1Text;
@@ -14,10 +14,17 @@ public class DialogueManager : MonoBehaviour
     public CameraShake cameraShake;
     private bool skipTyping = false;
 
+    float countDownTillNextDialogue;
+
+    private void Update()
+    {
+        countDownTillNextDialogue-=Time.deltaTime;
+    }
+
 
     private (string speaker, string text)[] dialogues = {
-    ("Player1", "Waddles! Humanity has been bunkered underground for a millennia, but it looks like the world is finally collapsing!"),
-    ("Player2", "Wiggles... Our time has finally come. Except... it has come for one of us..."),
+    ("Player1", "Wiggles! Humanity has been bunkered underground for a millennia, but it looks like the world is finally collapsing!"),
+    ("Player2", "Waddles... Our time has finally come. Except... it has come for one of us..."),
     ("Player2", "That last spaceship is mine!"),
     ("Player1", "Not if I beat you first!")
     };
@@ -27,10 +34,18 @@ public class DialogueManager : MonoBehaviour
 
     void Start()
     {
-        nextButton.onClick.AddListener(DisplayNextDialogue);
+        nextButton.onClick.AddListener(nextButtonPress);
         skipButton.onClick.AddListener(SkipCutscene);
 
         StartCoroutine(PlayCutscene());
+    }
+
+    private void nextButtonPress()
+    {
+        if(countDownTillNextDialogue<=0)
+        {
+            DisplayNextDialogue();
+        }
     }
 
     private IEnumerator PlayCutscene()
@@ -57,9 +72,8 @@ public class DialogueManager : MonoBehaviour
         {
             HideNextButton();
         }
+
     }
-
-
     private IEnumerator ShakeAndPlayDialogue()
     {
         rumbleSound.Play();
@@ -113,6 +127,7 @@ public class DialogueManager : MonoBehaviour
 
     private void HideNextButton()
     {
-        nextButton.gameObject.SetActive(false);
+        //nextButton.gameObject.SetActive(false);
+        SceneManager.LoadScene("Brecklevel");
     }   
 }
