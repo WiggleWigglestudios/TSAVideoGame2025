@@ -406,8 +406,8 @@ MonoBehaviour:
   boundsOfLevel:
   - {x: 0, y: 0}
   - {x: 32, y: 32}
-  levelDataFilePath: Assets/LevelData/TestLevel.txt
-  translationDataFilePath: Assets/LevelData/TestLevelTranslationTable.txt
+  levelDataFilePath: TestLevel
+  translationDataFilePath: TestLevelTranslationTable
   collapseTilePrefab: {fileID: 7641180659968661374, guid: d6f568be3a1aa3e4eb296f9ec8d803a9, type: 3}
   collapsed: 0
   checkPointHits: 0
@@ -1600,6 +1600,7 @@ MonoBehaviour:
   jumpCountDown: 0
   jumped: 0
   inWater: 0
+  pInWater: 0
   levelManager: {fileID: 0}
   spriteRenderer: {fileID: 565086186}
   playerSprites:
@@ -2187,6 +2188,7 @@ MonoBehaviour:
   jumpCountDown: 0
   jumped: 0
   inWater: 0
+  pInWater: 0
   levelManager: {fileID: 0}
   spriteRenderer: {fileID: 1765799477}
   playerSprites:
