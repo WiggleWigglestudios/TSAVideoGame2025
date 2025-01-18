@@ -35,7 +35,7 @@ public class CameraFollow : MonoBehaviour
         float distance = dir.magnitude;
         dir.Normalize();
 
-        pos += dir * distance * Mathf.Pow(0.5f, Time.deltaTime) * Time.deltaTime;
+        pos += dir * distance * Mathf.Pow(0.9f, Time.deltaTime)*3.0f * Time.deltaTime;
         pos.z = -10;
         transform.position = pos;
 

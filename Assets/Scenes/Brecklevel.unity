@@ -17950,6 +17950,7 @@ MonoBehaviour:
   jumpCountDown: 0
   jumped: 0
   inWater: 0
+  pInWater: 0
   levelManager: {fileID: 1902048385}
   spriteRenderer: {fileID: 390477453}
   playerSprites:
@@ -18058,7 +18059,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 0.05
+  m_Volume: 0.5
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -18157,7 +18158,7 @@ MonoBehaviour:
   footstepSource: {fileID: 390477455}
   leftFootSound: {fileID: 8300000, guid: c7d1ecf1e3ab94e2699d7987e9c928da, type: 3}
   rightFootSound: {fileID: 8300000, guid: 918f89b4869c44382b73848c15ee31c2, type: 3}
-  stepInterval: 0.4
+  stepInterval: 0.25
 --- !u!1 &422357846
 GameObject:
   m_ObjectHideFlags: 0
@@ -35980,6 +35981,7 @@ MonoBehaviour:
   jumpCountDown: 0
   jumped: 0
   inWater: 0
+  pInWater: 0
   levelManager: {fileID: 1902048385}
   spriteRenderer: {fileID: 1066059076}
   playerSprites:
@@ -36090,7 +36092,7 @@ MonoBehaviour:
   footstepSource: {fileID: 1066059079}
   leftFootSound: {fileID: 8300000, guid: c7d1ecf1e3ab94e2699d7987e9c928da, type: 3}
   rightFootSound: {fileID: 8300000, guid: 918f89b4869c44382b73848c15ee31c2, type: 3}
-  stepInterval: 0.4
+  stepInterval: 0.25
 --- !u!82 &1066059079
 AudioSource:
   m_ObjectHideFlags: 0
@@ -36104,7 +36106,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 0.05
+  m_Volume: 0.5
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -36410,7 +36412,7 @@ Transform:
   m_GameObject: {fileID: 1153502806}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 93.5, y: 118, z: 1.8}
+  m_LocalPosition: {x: 93.5, y: 118, z: 1.79}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

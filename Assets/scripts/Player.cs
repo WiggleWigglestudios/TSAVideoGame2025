@@ -29,6 +29,7 @@ public class Player : MonoBehaviour
     public float jumpCountDown;
     public bool jumped;
     public bool inWater;
+    public bool pInWater;
 
     public LevelManager levelManager;
 
@@ -100,7 +101,7 @@ public class Player : MonoBehaviour
 
     private void FixedUpdate()
     {
-
+       
         // Debug.Log(levelManager.getTile(transform.position));
 
         if (fixedToFloating(pos).y >186)
@@ -242,20 +243,26 @@ public class Player : MonoBehaviour
             }
         }
 
+        Debug.Log(inWater + " " + pInWater);
+        if ((inWater && !pInWater) || (!inWater && pInWater))
+        {
+            if (Time.time >= nextSwimSoundTime)
+            {
+                    if (audioSource != null && swimSound != null)
+                    {
+                    audioSource.PlayOneShot(swimSound);
+                    nextSwimSoundTime = Time.time + swimSoundCooldown;
+                     }
+           
+               
+            }
+        }
 
         //swimming
         if (inWater)
         {
             // Play swim audio
 
-            if (Time.time >= nextSwimSoundTime)
-            {
-                if (audioSource != null && swimSound != null)
-                {
-                    audioSource.PlayOneShot(swimSound);
-                    nextSwimSoundTime = Time.time + swimSoundCooldown;
-                }
-            }
             if (((Input.GetKey(KeyCode.W) && !UsesArrowKeys) || (Input.GetKey(KeyCode.UpArrow) && UsesArrowKeys)))
             {
                 vel.y += floatingToFixed(-gravity * jumpHeight / 4.0f * Time.deltaTime * Mathf.Max(1.0f, WaterDepth()) * 1.2f);
@@ -391,7 +398,7 @@ public class Player : MonoBehaviour
         //Death check
         if (levelManager.getTile(fixedToFloating(pos) + new Vector2(0.5f, 0.5f)) == 3) { Died(); }
 
-
+        pInWater = inWater;
         //water check
         if (levelManager.getTile(fixedToFloating(pos) + new Vector2(0.5f, 0.5f)) == 2)
         {
@@ -521,7 +528,7 @@ public class Player : MonoBehaviour
         bool hasBeen = false;
         Vector2Int tempCheckPointPos = Vector2Int.FloorToInt(checkPointPos);
         // Audio
-        Debug.Log("checkpoint: "+tempCheckPointPos+" new: "+newCheckPointPos);
+        //Debug.Log("checkpoint: "+tempCheckPointPos+" new: "+newCheckPointPos);
        /* if (tempCheckPointPos != newCheckPointPos)
         {
             if (audioSource != null && checkPointSound != null)
@@ -581,6 +588,14 @@ public class Player : MonoBehaviour
         vel = new Vector2Int(0, 0);
         maxJumps = 1;
         jumpHeight = 4.5f;
+        if (Time.time >= deathDelay)
+        {
+            if (audioSource != null && deathSound != null)
+            {
+                audioSource.PlayOneShot(deathSound);
+                deathDelay = Time.time + 0.5f;
+            }
+        }
     }
 
 
@@ -613,7 +628,7 @@ public class Player : MonoBehaviour
         spriteRenderer.flipX = !facing;
     }
 
-    float fixedToFloating(int input)
+    public float fixedToFloating(int input)
     {
         float output = input;
         output /= 65536.0f;
