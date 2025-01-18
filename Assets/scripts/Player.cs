@@ -627,7 +627,7 @@ public class Player : MonoBehaviour
 
 
 
-    Vector2 fixedToFloating(Vector2Int input)
+    public Vector2 fixedToFloating(Vector2Int input)
     {
         Vector2 output = input;
         output /= 65536.0f;
@@ -686,7 +686,7 @@ public class Player : MonoBehaviour
         return new Vector2Int(input.x << 16, input.y << 16);
     }
 
-    bool AABB(Vector2 aMin, Vector2 aMax, Vector2 bMin, Vector2 bMax)
+    public bool AABB(Vector2 aMin, Vector2 aMax, Vector2 bMin, Vector2 bMax)
     {
         drawDebugRect(aMin, aMax);
         drawDebugRect(bMin, bMax);
